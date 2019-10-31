@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uca.network.core.mapper.dns.DnsNameServersMapper">
+
+
+    <resultMap id="dnsMap" type="com.uca.network.core.mapper.dns.dto.DnsNameServersDto">
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="subnet_id" jdbcType="VARCHAR" property="subnetId"/>
+        <result column="order" jdbcType="TINYINT" property="order"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updateTime"/>
+
+    </resultMap>
+
+    <select id="queryDnsNameServersList" resultMap="dnsMap">
+        select * from
+        tbl_dnsnameservers where
+        1 = 1
+        <if test="subnetIds!=null and subnetIds.size()>0">
+            and subnet_id in
+            <foreach collection="subnetIds" item="subnetId" index="no" open="("
+                     separator="," close=")">
+                #{subnetId}
+            </foreach>
+        </if>
+    </select>
+
+    <delete id="deleteDnsNameServersBatch" parameterType="java.util.List">
+        delete from tbl_dnsnameservers where
+        1 = 1
+        <if test="subnetIds!=null and subnetIds.size()>0">
+            and subnet_id in
+            <foreach collection="subnetIds" item="subnetId" index="no" open="("
+                     separator="," close=")">
+                #{subnetId}
+            </foreach>
+        </if>
+    </delete>
+
+    <insert id="addDnsNameServersBatch" parameterType="java.util.List">
+
+        insert into tbl_dnsnameservers  values
+        <foreach collection="dnsList" item="item" index="index" separator=",">
+            (#{item.address},#{item.subnetId},#{item.order},#{item.createTime},#{item.updateTime})
+        </foreach>
+    </insert>
+
+
+</mapper>
+
