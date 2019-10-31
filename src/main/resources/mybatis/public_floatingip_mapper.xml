@@ -3,19 +3,27 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.h3cloud.pco.mapper.neutron.floatingip.FloatingIpMapper">
 
-    <resultMap id="floatingIpsMap" type="com.uca.network.extension.mapper.floatingip.dto.FloatingIpDto">
+   <!-- <resultMap id="floatingIpsMap" type="com.uca.network.extension.mapper.floatingip.dto.FloatingIpDto">
         <result column="tenant_id" jdbcType="VARCHAR" property="tenantId"/>
         <result column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="extra" jdbcType="VARCHAR" property="extra"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="floating_ip_address" jdbcType="VARCHAR" property="floatingIpAddress"/>
+        <result column="floating_network_id" jdbcType="VARCHAR" property="floatingNetworkId"/>
         <result column="fixed_port_id" jdbcType="VARCHAR" property="fixedPortId"/>
         <result column="fixed_ip_address" jdbcType="VARCHAR" property="fixedIpAddress"/>
-    </resultMap>
 
-    <select id="queryFloatingIpsByParam" resultMap="floatingIpsMap">
-        select project_id,id,extra,floating_ip_address,fixed_port_id,fixed_ip_address
-        from
-        neutron.floatingips where 1 = 1
+        <result column="fixed_ip_address" jdbcType="VARCHAR" property="fixedIpAddress"/>
+        <result column="fixed_ip_address" jdbcType="VARCHAR" property="fixedIpAddress"/>
+        <result column="fixed_ip_address" jdbcType="VARCHAR" property="fixedIpAddress"/>
+        <result column="fixed_ip_address" jdbcType="VARCHAR" property="fixedIpAddress"/>
+        <result column="fixed_ip_address" jdbcType="VARCHAR" property="fixedIpAddress"/>
+        <result column="fixed_ip_address" jdbcType="VARCHAR" property="fixedIpAddress"/>
+        <result column="extra" jdbcType="VARCHAR" property="extra"/>
+    </resultMap>-->
+
+    <select id="queryFloatingIpsByParam" resultMap="com.uca.network.extension.mapper.floatingip.dto.FloatingIpDto">
+        select *
+        from floatingips where 1 = 1
         <if test="projectId!=null">
             and project_id = #{projectId}
         </if>
@@ -25,10 +33,70 @@
     </select>
 
 
-    <select id="queryAllFloatingIps" resultMap="floatingIpsMap">
-        select project_id,id,extra,floating_ip_address,fixed_port_id,fixed_ip_address
-        from neutron.floatingips
+    <select id="queryAllFloatingIps" resultType="com.uca.network.extension.mapper.floatingip.dto.FloatingIpDto">
+        select * from floatingips
     </select>
+
+    <insert id="insertFloatingIps" parameterType="com.uca.network.extension.mapper.floatingip.dto.FloatingIpDto">
+        insert into floatingips
+        (id,
+        name,
+        tenant_id,
+        floating_ip_address,
+        floating_network_id,
+        fixed_ip_address,
+        fixed_port_id,
+        router_id,
+        last_known_router_id,
+        status,
+        standard_attr_id,
+        tx_averateLimit,
+        rx_averateLimit,
+        line_type,
+        extra,
+        created_at,
+        updated_at
+        )
+        values
+        (
+        #{id},
+        #{name},
+        #{tenantId},
+        #{floatingIpAddress},
+        #{floatingNetworkId},
+        #{fixedIpAddress},
+        #{fixedPortId},
+        #{routerId},
+        #{lastKnownRouterId},
+        #{status},
+        #{standardAttrId},
+        #{txAverateLimit},
+        #{rxAverateLimit},
+        #{lineType},
+        #{extra},
+        #{createdAt},
+        #{updatedAt}
+        )
+    </insert>
+
+
+    <update id="updateFloatingIps" parameterType="com.uca.network.extension.mapper.floatingip.dto.FloatingIpDto">
+        update floatingips set
+          fixed_ip_address = #{fixedIpAddress},
+          fixed_port_id = #{fixedPortId},
+          router_id = #{routerId},
+          last_known_router_id = #{lastKnownRouterId},
+          updated_at = #{updatedAt},
+          <if test="txAverateLimit != null" >
+              tx_averateLimit = #{txAverateLimit},
+          </if>
+          <if test="rxAverateLimit != null" >
+              rx_averateLimit = #{rxAverateLimit}
+          </if>
+        where id = #{id}
+
+    </update>
+
 
 </mapper>
 

@@ -2,6 +2,8 @@ package com.uca.network.extension.mapper.floatingip.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class FloatingIpDto {
     private String tenantId;
@@ -19,6 +21,6 @@ public class FloatingIpDto {
     private String rxAverateLimit;
     private String lineType;
     private String extra;
-    private Data createdAt;
-    private Data updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 }
