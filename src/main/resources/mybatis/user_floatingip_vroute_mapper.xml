@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.uca.network.extension.mapper.floatingip.userFloatingIpVrouteMapper">
+<mapper namespace="com.uca.network.extension.mapper.floatingip.UserFloatingIpVrouteMapper">
 
-    <insert id = "insertUserFloatingIpVroute" parameterType="com.uca.network.extension.mapper.floatingip.dto.userFloatingIpVrouteDto"
+    <insert id = "insertUserFloatingIpVroute" parameterType="com.uca.network.extension.mapper.floatingip.dto.UserFloatingIpVrouteDto"
             useGeneratedKeys="true" keyProperty="id">
         insert into vroute
         (

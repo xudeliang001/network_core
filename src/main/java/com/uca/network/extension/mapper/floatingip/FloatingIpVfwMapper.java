@@ -1,5 +1,6 @@
-package com.uca.network.extension.plugin.floatingip.mapper;
+package com.uca.network.extension.mapper.floatingip;
 
+import com.uca.network.extension.mapper.floatingip.dto.FloatingVfwDto;
 import org.apache.ibatis.annotations.Param;
 
 /**
