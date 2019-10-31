@@ -46,7 +46,7 @@
     </insert>
 
     <delete id="deleteReservedIpByIpAddress">
-        delete from ipallocations where ipAddress = #{ip_address}
+        delete from ipallocations where ip_address = #{ipAddress}
     </delete>
 
 </mapper>

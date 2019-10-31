@@ -34,11 +34,11 @@
     </insert>
 
     <select id="queryUserFloatingIpVrouteById">
-        select * from vroute where floatingIpId = #{floating_ip_id}
+        select * from vroute where floating_ip_id = #{floatingIpId}
     </select>
 
     <delete id="deleteUserFloatingIpVrouteById">
-        delete from vroute where floatingIpId = #{floating_ip_id}
+        delete from vroute where floating_ip_id = #{floatingIpId}
     </delete>
 
 

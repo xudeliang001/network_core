@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uca.network.extension.plugin.floatingip.mapper.FloatingIpVfwMapper">
+
+    <insert id = "insertFloatingIpVfw" parameterType="com.uca.network.extension.plugin.floatingip.mapper.FloatingVfwDto "
+            useGeneratedKeys="true" keyProperty="id">
+        insert into vfw_floatingip
+        (
+        floating_ip_address,
+        tx_averateLimit,
+        rx_averateLimit,
+        fixed_ip_address,
+        floating_ip_num,
+        fixed_ip_num,
+        protocal,
+        vpn_instance_id,
+        acl_name,
+        subnet_cidr,
+        address_group_id,
+        address_group_name,
+        type
+        )
+        values
+        (
+        #{floatingIpAddress},
+        #{txAverateLimit},
+        #{rxAverateLimit},
+        #{fixedIpAddress},
+        #{floatingIpNum},
+        #{fixedIpNum},
+        #{protocal},
+        #{vpnInstanceId},
+        #{aclName},
+        #{subnetCidr},
+        #{addressGroupId},
+        #{addressGroupName},
+        #{type}
+        )
+    </insert>
+
+    <select id="queryFloatingIpVfwByAddress">
+        select * from vfw_floatingip where floating_ip_address = #{floatingIpAddress}
+    </select>
+
+    <delete id="deleteFloatingIpVfwByAddress">
+        delete from vfw_floatingip where floating_ip_address = #{floatingIpAddress}
+    </delete>
+
+
+</mapper>
+
