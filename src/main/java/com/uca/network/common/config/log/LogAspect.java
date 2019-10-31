@@ -55,6 +55,8 @@ class LogAspect {
                 beforePerfix = "===>";
                 afterPerfix = "<===";
                 break;
+            default:
+                break;
         }
         Class methodClass = proceedingJoinPoint.getTarget().getClass();
         Logger log = LoggerFactory.getLogger(methodClass);

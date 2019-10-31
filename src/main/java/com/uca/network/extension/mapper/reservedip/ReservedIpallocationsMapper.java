@@ -12,12 +12,27 @@ import java.util.List;
  */
 public interface ReservedIpallocationsMapper {
 
+    /**
+     * @param subnetId
+     * @param ipAddress
+     * @return
+     */
     ReservedIpDto queryReservedIpByIpAddress(@Param("subnetId") String subnetId, @Param("ipAddress") String ipAddress);
 
+    /**
+     * @param allocated
+     * @return
+     */
     List<ReservedIpDto> queryReservedIpByAllocated(@Param("allocated") int allocated);
 
+    /**
+     * @param reservedIpDto
+     */
     void insertReservedIp(ReservedIpDto reservedIpDto);
 
+    /**
+     * @param ipAddress
+     */
     void deleteReservedIpByIpAddress(@Param("ipAddress") String ipAddress);
 
 }

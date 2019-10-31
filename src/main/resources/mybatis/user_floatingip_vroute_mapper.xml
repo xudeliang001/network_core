@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uca.network.extension.mapper.floatingip.userFloatingIpVrouteMapper">
+
+    <insert id = "insertUserFloatingIpVroute" parameterType="com.uca.network.extension.mapper.floatingip.dto.userFloatingIpVrouteDto"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into vroute
+        (
+        floating_ip_id,
+        floating_ip_address,
+        subnet_id,,
+        tx_averateLimit,
+        rx_averateLimit,
+        fixed_ip_address,
+        floating_ip_num,
+        fixed_ip_num,
+        protocal,
+        type
+        )
+        values
+        (
+        #{floatingIpId},
+        #{floatingIpAddress},
+        #{subnetId},
+        #{txAverateLimit},
+        #{rxAverateLimit},
+        #{fixedIpAddress},
+        #{floatingIpNum},
+        #{fixedIpNum},
+        #{protocal},
+        #{type}
+        )
+    </insert>
+
+    <select id="queryUserFloatingIpVrouteById">
+        select * from vroute where floatingIpId = #{floating_ip_id}
+    </select>
+
+    <delete id="deleteUserFloatingIpVrouteById">
+        delete from vroute where floatingIpId = #{floating_ip_id}
+    </delete>
+
+
+</mapper>
+

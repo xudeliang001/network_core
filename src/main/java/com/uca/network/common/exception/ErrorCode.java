@@ -1,12 +1,8 @@
-/***********************************************************************
- * ErrorCode.java H3C所有，受到法律的保护，任何公司或个人，未经授权不得擅自拷贝。
- *
- * @copyright Copyright: 2015-2020
- * @creator likewei<li.kewei@h3c.com>
- * @create-time 2018/4/25 11:34
- * @revision $Id: *
- ***********************************************************************/
 package com.uca.network.common.exception;
+
+/**
+ * @author admin
+ */
 
 public enum ErrorCode {
     FIELD_ERROR(1000),

@@ -41,6 +41,7 @@ public class CommonException extends RuntimeException {
         return field;
     }
 
+    @Override
     public String getMessage() {
         return mes;
     }

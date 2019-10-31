@@ -8,7 +8,7 @@ import lombok.Data;
  * @date 2019/10/31
  */
 @Data
-public class userVrouteDto {
+public class UserFloatingIpVrouteDto {
     private String id;
     private String floatingIpId;
     private String floatingIpAddress;
