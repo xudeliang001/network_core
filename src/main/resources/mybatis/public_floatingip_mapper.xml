@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.h3cloud.pco.mapper.neutron.floatingip.FloatingIpMapper">
+<mapper namespace="com.uca.network.extension.mapper.floatingip.FloatingIpMapper">
 
-   <!-- <resultMap id="floatingIpsMap" type="com.uca.network.extension.mapper.floatingip.dto.FloatingIpDto">
+   <!-- <resultMap id="floatingIpsMap" type="com.uca.network.extension.mapper.floatingip.dto.BasicFloatingIpDtoIpDto">
         <result column="tenant_id" jdbcType="VARCHAR" property="tenantId"/>
         <result column="id" jdbcType="VARCHAR" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>

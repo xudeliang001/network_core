@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uca.network.extension.mapper.floatingip.DeviceFloatingipRouteMapper">
+
+
+    <select id="queryFloatingipRouteByParam">
+        select * from device_exit_route
+        where 1 = 1
+        <if test="deviceIp!=null">
+            and device_ip = #{deviceIp}
+        </if>
+        <if test="floatingIpAddress!=null">
+            and floating_ip_address = #{floatingIpAddress}
+        </if>
+    </select>
+
+
+    <insert id = "insertFloatingipRoute" parameterType="com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingipRouteDto"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into vroute
+        (
+        floating_ip_address,
+        tx_averateLimit,
+        rx_averateLimit,
+        device_ip
+        )
+        values
+        (
+        #{floatingIpAddress},
+        #{txAverateLimit},
+        #{rxAverateLimit},
+        #{deviceIp}
+        )
+    </insert>
+
+
+</mapper>
+

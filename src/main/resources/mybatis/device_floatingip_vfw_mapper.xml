@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.uca.network.extension.mapper.floatingip.FloatingIpVfwMapper">
+<mapper namespace="com.uca.network.extension.mapper.floatingip.DeviceFloatingIpVfwMapper">
 
-    <insert id = "insertFloatingIpVfw" parameterType="com.uca.network.extension.mapper.floatingip.dto.FloatingVfwDto"
+    <insert id = "insertFloatingIpVfw" parameterType="com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingVfwDto"
             useGeneratedKeys="true" keyProperty="id">
         insert into vfw_floatingip
         (

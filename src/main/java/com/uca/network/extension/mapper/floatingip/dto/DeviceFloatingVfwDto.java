@@ -8,11 +8,9 @@ import lombok.Data;
  * @date 2019/10/31
  */
 @Data
-public class FloatingVfwDto {
+public class DeviceFloatingVfwDto {
     private String id;
     private String floatingIpAddress;
-    private String txAverateLimit;
-    private String rxAverateLimit;
     private String fixedIpAddress;
     private String floatingIpNum;
     private String fixedIpNum;

@@ -1,7 +1,7 @@
 package com.uca.network.extension.plugin.floatingip.service;
 
-import com.uca.network.extension.mapper.floatingip.FloatingIpVfwMapper;
-import com.uca.network.extension.mapper.floatingip.dto.FloatingVfwDto;
+import com.uca.network.extension.mapper.floatingip.DeviceFloatingIpVfwMapper;
+import com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingVfwDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +17,13 @@ public class FloatingipPluginService {
     private static final Logger logger = LoggerFactory.getLogger(FloatingipPluginService.class);
 
     @Autowired
-    private FloatingIpVfwMapper floatingIpVfwMapper;
+    private DeviceFloatingIpVfwMapper floatingIpVfwMapper;
 
     /**
      * @param floatingVfwDto
      * @return
      */
-    public Boolean updateFloatingIpToAgent(FloatingVfwDto floatingVfwDto){
+    public Boolean updateFloatingIpToAgent(DeviceFloatingVfwDto floatingVfwDto){
 
         //校验floatingVfwDto
         if (floatingVfwDto == null){

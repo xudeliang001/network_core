@@ -1,6 +1,6 @@
 package com.uca.network.extension.mapper.floatingip;
 
-import com.uca.network.extension.mapper.floatingip.dto.FloatingVfwDto;
+import com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingVfwDto;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -8,19 +8,19 @@ import org.apache.ibatis.annotations.Param;
  * @version 1.0
  * @date 2019/10/31
  */
-public interface FloatingIpVfwMapper {
+public interface DeviceFloatingIpVfwMapper {
 
     /**
      * @param floatingVfwDto
      * @return
      */
-    String insertFloatingIpVfw(FloatingVfwDto floatingVfwDto);
+    String insertFloatingIpVfw(DeviceFloatingVfwDto floatingVfwDto);
 
     /**
      * @param floatingIpAddress
      * @return
      */
-    FloatingVfwDto queryFloatingIpVfwByAddress(@Param("floatingIpAddress") String floatingIpAddress);
+    DeviceFloatingVfwDto queryFloatingIpVfwByAddress(@Param("floatingIpAddress") String floatingIpAddress);
 
     /**
      * @param floatingIpAddress

@@ -9,7 +9,7 @@
         (
         floating_ip_id,
         floating_ip_address,
-        subnet_id,,
+        subnet_id,
         tx_averateLimit,
         rx_averateLimit,
         fixed_ip_address,
