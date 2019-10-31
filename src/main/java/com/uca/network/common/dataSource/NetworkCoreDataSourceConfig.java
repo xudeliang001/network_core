@@ -13,7 +13,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(value = "com.uca.network",sqlSessionFactoryRef = "sqlSessionFactoryBeanNetworkCore")
+@MapperScan(value = "com.uca.network.*.mapper",sqlSessionFactoryRef = "sqlSessionFactoryBeanNetworkCore")
 @Slf4j
 public class NetworkCoreDataSourceConfig extends DataSourceConfig {
     private final Logger logger = LoggerFactory.getLogger(getClass());
