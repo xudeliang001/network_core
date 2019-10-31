@@ -1,0 +1,11 @@
+@startuml
+autonumber
+
+UCO -> FloatingIpService: 查询公网IP
+FloatingIpService -> DB:查询floatingips表、port表
+FloatingIpService <-- DB:获取公网IP的信息和绑定的主机的Id
+
+FloatingIpService -> computeServcie:根据主机Id调用主机接口查询主机信息
+FloatingIpService <-- computeServcie:获取主机信息
+UCO <-- FloatingIpService: 公网IP信息
+@enduml

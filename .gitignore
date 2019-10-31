@@ -1,0 +1,12 @@
+*.class
+*.log
+.idea
+*.iml
+*.jar
+*.war
+.classpath
+.gradle
+build
+.project
+classes
+out

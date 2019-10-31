@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uca.network.core.mapper.router.RouterMapper">
+
+
+    <resultMap id="routerMap" type="com.uca.network.core.mapper.router.dto.RouterDto">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="admin_state_up" jdbcType="VARCHAR" property="adminStateUp"/>
+        <result column="standard_attr_id" jdbcType="BIGINT" property="standardAttrId"/>
+        <result column="tenant_id" jdbcType="VARCHAR" property="tenantId"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updateTime"/>
+
+    </resultMap>
+
+    <select id="queryRoutersByParam" resultMap="routerMap">
+        select id, name , status , admin_state_up, standard_attr_id , tenant_id,created_at,updated_at from
+        routers where
+        1 = 1
+        <if test="tenantId !=null">
+            and tenant_id = #{tenantId}
+        </if>
+        <if test="routerId !=null">
+            and id = #{routerId}
+        </if>
+        <if test="routerIds!=null and routerIds.size()>0">
+            and network_id in
+            <foreach collection="routerIds" item="routerId" index="no" open="("
+                     separator="," close=")">
+                #{routerId}
+            </foreach>
+        </if>
+    </select>
+    <insert id="insertRouter" parameterType="com.uca.network.core.mapper.router.dto.RouterDto">
+        insert into routers
+        (
+          id,
+          name ,
+          status ,
+          admin_state_up,
+          standard_attr_id ,
+          tenant_id,
+          created_at,
+          updated_at
+          )
+          values(
+          #{id} ,
+          #{name},
+          #{status},
+          #{adminStateUp},
+          #{standardAttrId},
+          #{tenant_id},
+          #{createTime},
+          #{updateTime}
+
+        )
+    </insert>
+    <delete id="deleteRouterById">
+
+        delete from router where id = #{id}
+    </delete>
+
+
+</mapper>
+

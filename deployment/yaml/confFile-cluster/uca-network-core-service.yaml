@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uca-network-core-service
+spec:
+  ports:
+  - port: 30415
+    # the port that this service should serve on
+    # the container on each pod to connect to, can be a name
+    # (e.g. 'www') or a number (e.g. 80)
+    targetPort: 30416
+    protocol: TCP
+    nodePort: 30415
+    name: uca-network-core-service
+  # just like the selector in the replication controller,
+  # but this time it identifies the set of pods to load balance
+  # traffic to.
+  - port: 30410
+    # the port that this service should serve on
+    # the container on each pod to connect to, can be a name
+    # (e.g. 'www') or a number (e.g. 80)
+    targetPort: 30410
+    protocol: TCP
+    nodePort: 30410
+    name: uca-network-core-debug-service
+  selector:
+    typename: uca-network-core
+  type: NodePort

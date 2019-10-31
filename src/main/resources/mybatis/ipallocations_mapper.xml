@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uca.network.core.mapper.ipallocation.IpallocationsMapper">
+
+
+    <resultMap id="ipAllocationsMap" type="com.uca.network.core.mapper.ipallocation.dto.IpAllocationsDto">
+        <result column="port_id" jdbcType="VARCHAR" property="portId"/>
+        <result column="ip_address" jdbcType="VARCHAR" property="ipAddress"/>
+        <result column="subnet_id" jdbcType="VARCHAR" property="subnetId"/>
+        <result column="network_id" jdbcType="VARCHAR" property="networkId"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updateTime"/>
+
+    </resultMap>
+
+    <select id="queryIpAllocationsByParam" resultMap="ipAllocationsMap">
+        select t_ipallocations.ip_address AS ip_address,t_ipallocations.subnet_id as subnet_id,
+        t_ipallocations.network_id as network_id, t_ipallocations.port_id as port_id,
+        created_at , updated_at from ipallocations t_ipallocations
+        where 1 = 1
+        <if test="portIds!=null and portIds.size()>0">
+            and port_id in
+            <foreach collection="portIds" item="portId" index="no" open="("
+                     separator="," close=")">
+                #{portId}
+            </foreach>
+        </if>
+        <if test="subnetIds!=null and subnetIds.size()>0">
+            and subnet_id in
+            <foreach collection="subnetIds" item="subnetId" index="no" open="("
+                     separator="," close=")">
+                #{subnetId}
+            </foreach>
+        </if>
+        <if test="networkIds!=null and networkIds.size()>0">
+            and network_id in
+            <foreach collection="networkIds" item="networkId" index="no" open="("
+                     separator="," close=")">
+                #{networkId}
+            </foreach>
+        </if>
+
+    </select>
+    <insert id = "insertIpAllocations" parameterType="com.uca.network.core.mapper.ipallocation.dto.IpAllocationsDto">
+        insert into ipallocations
+        (
+        port_id,
+        ip_address,
+        subnet_id,
+        network_id,
+        created_at,
+        updated_at
+        )
+        values
+        (
+        #{portId},
+        #{ipAddress},
+        #{subnetId},
+        #{networkId},
+        #{createTime},
+        #{updateTime}
+        )
+    </insert>
+
+    <delete id="deleteIpAllocationsByPortId">
+        delete from ipallocations where port_id = #{portId}
+
+    </delete>
+
+</mapper>
+

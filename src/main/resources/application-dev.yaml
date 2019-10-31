@@ -1,0 +1,98 @@
+server:
+  port: 30416
+  context-path: /uca/network
+
+default:
+  role-id: 67bcfea5-0428-44be-9219-37d56a5454a1
+  project-id: 9052ae85792143ff955c35c52e8e41bd
+spring:
+  http:
+    multipart:
+      enabled: true
+      max-file-size: 8MB
+      max-request-size: 8MB
+  security:
+    enabled: false
+  jackson:
+    time-zone: GMT+8
+  rabbitmq:
+    host: 10.254.7.1
+    port: 5672
+    username: admin
+    password: unic-moove
+    listener:
+      acknowledge-mode: none
+#  datasource:
+#    url: jdbc:mysql://10.0.46.168:3306/unicloud_network_core?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Hongkong
+#    driverClassName: com.mysql.jdbc.Driver
+#    platform: mysql
+#    initialSize: 5
+#    minIdle: 5
+#    maxActive: 50
+#    maxWait: 60000
+#    timeBetweenEvictionRunsMillis: 60000
+#    minEvictableIdleTimeMillis: 300000
+#    validationQuery: SELECT1FROMDUAL
+#    testWhileIdle: true
+#    testOnBorrow: false
+#    testOnReturn: false
+#    poolPreparedStatements: false
+#    filters: stat,wall,log4j
+#    logSlowSql: true
+db:
+  url: jdbc:mysql://10.254.7.1:3306/%s?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Hongkong
+  driverClassName: com.mysql.cj.jdbc.Driver
+  username: root
+  password: unic-moove
+  platform: mysql
+  initialSize: 5
+  minIdle: 5
+  maxActive: 20
+  maxWait: 60000
+  timeBetweenEvictionRunsMillis: 60000
+  minEvictableIdleTimeMillis: 300000
+  validationQuery: SELECT1FROMDUAL
+  testWhileIdle: true
+  testOnBorrow: false
+  testOnReturn: false
+  poolPreparedStatements: false
+  filters: stat,wall,log4j
+  logSlowSql: true
+  slowSqlMillis: 200
+
+mybatis:
+  mapper-locations: classpath:mybatis/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-aliases-package: com.uca.network
+
+network:
+  dns:
+  swaggerEnable: true
+
+logging:
+  exception:
+    debug: true             # 是否在全局返回exception信息 前段异常信息开关
+    tag: com.uca.network    # 向该包log添加标记 并在 full-message 为 false 时 保留异常信息
+    full-message: false      # 是否全部显示异常信息
+  aspect:
+    debug: true             # 切面log下是否显示请求和返回信息
+    turn-on: true           # 切面log开关
+  console:
+    # 控制台log模板
+    pattern: '[%-5level] %d{HH:mm:ss.SSS} [%thread] [%-10X{tracing_id}] %logger{36} - %msg%n'
+    charset: UTF-8          # 控制台log字符集
+  file:
+    path: ${user.dir}/log   # 日志文件目录
+    # 日志文件名模板
+    name: 'cloudos-portal-%d{yyyy-MM-dd}.%i.log'
+    max-history: 120        # 文件最长天数
+    # 文件日志模板
+    pattern: '[%-5level] %d{HH:mm:ss.SSS} [%thread] [%-10X{tracing_id}] %logger{36} - %msg%n'
+    max-file-size: 50MB     # 单个日志文件大小
+  database:
+    driverClass: 'com.mysql.jdbc.Driver'
+    url: 'jdbc:mysql://127.0.0.1:3306/databaseName'
+    user: 'root'
+    password: 'root'
+  config: classpath:conf/logCfg.xml

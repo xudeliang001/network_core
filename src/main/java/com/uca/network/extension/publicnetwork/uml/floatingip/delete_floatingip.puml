@@ -1,0 +1,18 @@
+@startuml
+autonumber
+
+UCO -> FloatingIpService: 删除公网IP
+FloatingIpService --> FloatingIpService: 校验floatingip是否绑定实例
+alt
+else floatingip绑定了实例
+FloatingIpService -> Agent:解绑和删除带宽配置
+FloatingIpService <-- Agent:解绑和删除带宽配置成功
+FloatingIpService -> DB:删除floatingip和floatingips_dnat相关记录
+FloatingIpService <-- DB:成功
+else floatingip没有绑定实例
+FloatingIpService -> DB:删除floatingip和floatingips_dnat相关记录
+FloatingIpService <-- DB:成功
+end
+
+FloatingIpService --> UCO: 删除成功
+@enduml

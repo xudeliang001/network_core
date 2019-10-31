@@ -1,0 +1,9 @@
+{
+  "unit": [{
+    "ver": "${BUILD_VERSION}",
+    "module":"",
+    "name": "${SERVICE_NAME}",
+    "desc": "Uca Network Core",
+    "storage":[]
+  }]
+}

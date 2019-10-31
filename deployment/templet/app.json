@@ -1,0 +1,40 @@
+{
+  "unit": [{
+    "type":"",
+    "id":"",
+    "version": "${BUILD_VERSION}",
+    "module": "",
+    "isextend": "true",
+    "name": "${SERVICE_NAME}",
+    "desc": "Moove Extension",
+    "cmd": "",
+    "images": [{
+      "path": "${SERVICE_NAME}/images/${SERVICE_NAME}-${BUILD_VERSION}.tar",
+      "images":"${SERVICE_NAME}",
+      "tag":"${BUILD_VERSION}"
+    }],
+    "error_code": [{
+    }],
+    "yamls": [{
+      "mode": "single",
+      "preCmd": "",
+      "app": [{
+        "rcname": "${SERVICE_NAME}-rc",
+        "namespace": "default",
+        "rcpath": "${SERVICE_NAME}/yaml/confFile/uca-network-core-rc.yaml",
+        "rcservice": "${SERVICE_NAME}/yaml/confFile/uca-network-core-service.yaml"
+      }],
+      "postCmd": ""
+    },{
+      "mode": "cluster",
+      "preCmd": "",
+      "app": [{
+        "rcname": "${SERVICE_NAME}-rc",
+        "namespace": "default",
+        "rcpath": "${SERVICE_NAME}/yaml/confFile-cluster/uca-network-core-rc.yaml",
+        "rcservice": "${SERVICE_NAME}/yaml/confFile-cluster/uca-network-core-service.yaml"
+      }],
+      "postCmd": ""
+    }]
+  }]
+}

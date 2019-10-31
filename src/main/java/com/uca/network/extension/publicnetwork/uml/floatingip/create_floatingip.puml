@@ -1,0 +1,14 @@
+@startuml
+autonumber
+
+UCO -> FloatingIpService: 创建公网IP
+FloatingIpService --> FloatingIpService: 校验networkId是否为外网
+FloatingIpService --> FloatingIpService: 校验该网络下是否存在ipv4的子网
+
+FloatingIpService -> IpAllocationService: 根据线路类型，选择网络中对应线路类型的子网，在子网分配公网IP
+FloatingIpService <-- IpAllocationService: 获取到公网IP地址
+
+FloatingIpService -> DB: 存floatingips表
+FloatingIpService <-- DB: 存floatingips表成功
+FloatingIpService --> UCO: 返回创建结果
+@enduml

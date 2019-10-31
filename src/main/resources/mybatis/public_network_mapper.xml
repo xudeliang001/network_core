@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uca.network.extension.mapper.network.PublicNetworkMapper">
+
+
+    <resultMap id="networkMap" type="com.uca.network.extension.mapper.network.dto.PublicNetworkDto">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="project_id" jdbcType="VARCHAR" property="tenantId"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="admin_state_up" jdbcType="VARCHAR" property="adminStateUp"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    </resultMap>
+
+    <select id="queryPublicNetworksByParam" resultMap="networkMap">
+        SELECT * FROM public_network where 1 = 1
+        <if test="networkId !=null">
+            and id = #{networkId}
+        </if>
+    </select>
+
+    <insert id="insertPublicNetwork" parameterType="com.uca.network.extension.mapper.network.dto.PublicNetworkDto">
+        insert into public_network
+        (
+        id,
+        name,
+        tenant_id,
+        status,
+        admin_state_up,
+        created_at,
+        updated_at
+        )
+        values
+        (
+        #{id},
+        #{name},
+        #{tenantId},
+        #{status},
+        #{adminStateUp},
+        #{createdAt},
+        #{updatedAt}
+        )
+    </insert>
+
+    <delete id="deletePublicNetworkById">
+        delete from public_network where id = #{id}
+    </delete>
+
+</mapper>

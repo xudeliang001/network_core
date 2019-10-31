@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: uca-network-core-rc
+spec:
+  replicas: 1
+  # selector identifies the set of Pods that this
+  # replication controller is responsible for managing
+  selector:
+    app: uca-network-core
+  # podTemplate defines the 'cookie cutter' used for creating
+  # new pods when necessary
+  template:
+    metadata:
+      labels:
+        # Important: these labels need to match the selector above
+        # The api server enforces this constraint.
+        app: uca-network-core
+        typename:  uca-network-core
+    spec:
+      hostname: uca-network-core-server
+      nodeSelector:
+        nodeType: controller
+      containers:
+      - name: uca-network-core
+        image: ${SERVICE_NAME}:${BUILD_VERSION}
+        livenessProbe:
+          httpGet:
+            path: /uca/network/v1.0/swagger-ui.html
+            port: 30416
+          initialDelaySeconds: 180
+          timeoutSeconds: 8
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /uca/network/v1.0/swagger-ui.html
+            port: 30416
+          initialDelaySeconds: 5
+          timeoutSeconds: 4
+          periodSeconds: 5
+        env:
+        - name: JDBC_URL
+          value: jdbc:mysql://mysql-service:3306/%s?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Hongkong
+        - name: JDBC_USERNAME
+          value: root
+        - name: JDBC_PASSWORD
+          value: cloudos
+        - name: NETWORK_DNS
+          value: 220.194.70.15,113.207.55.15
+        - name: SWAGGER_ENABLE
+          value: true
+        - name: LOGGING_EXCEPTION_DEBUG
+          value: "true"
+        - name: LOGGING_EXCEPTION_FULLMESSAGE
+          value: "true"
+        - name: LOGGING_ASPECT_DEBUG
+          value: "true"
+        - name: LOGGING_ASPECT_TURNON
+          value: "true"
+        - name: RABBITMQ_HOST
+          value: rabbitmq-service
+        - name: RABBITMQ_PORT
+          value: "5672"
+        - name: RABBITMQ_USERNAME
+          value: "admin"
+        - name: RABBITMQ_PASSWORD
+          value: "unic-moove"
+        ports:
+        - containerPort: 30416
+        - containerPort: 30414
+        volumeMounts:
+        - mountPath: /opt/uca-network-core/log
+          name: log
+        - mountPath: /etc/localtime
+          name: time
+        - mountPath: /opt/uca-network-core/tmp/
+          name: playtmp
+        securityContext:
+          privileged: true
+      volumes:
+      - name: log
+        hostPath:
+          path: /var/logs/network/interfaces
+      - name: time
+        hostPath:
+          path: /etc/localtime
+      - name: playtmp
+        emptyDir: {}
+      terminationGracePeriodSeconds: 5

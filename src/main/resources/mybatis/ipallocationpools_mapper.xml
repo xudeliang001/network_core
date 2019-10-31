@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uca.network.core.mapper.ipallocationpools.IpallocationPoolsMapper">
+
+
+    <resultMap id="ipAllocationsPoolsMap" type="com.uca.network.core.mapper.ipallocationpools.dto.IpaAllocationpoolsDto">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="subnet_id" jdbcType="VARCHAR" property="subnetId"/>
+        <result column="first_ip" jdbcType="VARCHAR" property="firstIp"/>
+        <result column="last_ip" jdbcType="VARCHAR" property="lastIp"/>
+    </resultMap>
+
+    <select id="queryIpAllocationPoolsByParam" resultMap="ipAllocationsPoolsMap">
+        select  t_ipallocationpools.id AS id,t_ipallocationpools.subnet_id as subnet_id,
+        t_ipallocationpools.first_ip as first_ip, t_ipallocationpools.last_ip as last_ip from ipallocationpools t_ipallocationpools
+        where 1 = 1
+        <if test="subnetIds!=null and subnetIds.size()>0">
+            and subnet_id in
+            <foreach collection="subnetIds" item="subnetId" index="no" open="("
+                     separator="," close=")">
+                #{subnetId}
+            </foreach>
+        </if>
+
+    </select>
+
+    <insert id = "insertIpAllocationPools" parameterType="com.uca.network.core.mapper.ipallocationpools.dto.IpaAllocationpoolsDto">
+      insert into ipallocationpools
+      (id,
+      subnet_id,
+      first_ip,
+      last_ip
+      )
+      values
+      (
+       #{id},
+       #{subnetId},
+       #{firstIp},
+       #{lastIp}
+      )
+    </insert>
+
+    <delete id = "deleteIpAllocationPoolsByParam" parameterType="java.util.Map">
+        delete from ipallocationpools where 1 = 1
+        <if test="param.id!=null">
+            and id = #{param.id}
+        </if>
+        <if test="param.subnetId!=null">
+            and subnet_id = #{param.subnetId}
+        </if>
+    </delete>
+</mapper>
+

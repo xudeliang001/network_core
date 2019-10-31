@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uca.network.extension.mapper.subnet.SubnetMapper">
+
+
+    <resultMap id="subnetMap" type="com.uca.network.extension.mapper.subnet.dto.PublicSubnetDto">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="tenant_id" jdbcType="VARCHAR" property="tenantId"/>
+        <result column="network_id" jdbcType="VARCHAR" property="networkId"/>
+        <result column="cidr" jdbcType="VARCHAR" property="cidr"/>
+        <result column="gateway_ip" jdbcType="VARCHAR" property="gatewayIp"/>
+        <result column="standard_attr_id" jdbcType="BIGINT" property="standardAttrId"/>
+        <result column="ip_version" jdbcType="TINYINT" property="ipVersion"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="service_type" jdbcType="VARCHAR" property="serviceType"/>
+    </resultMap>
+
+    <select id="queryPublicSubnetsByParam" resultMap="subnetMap">
+        SELECT * FROM public_subnet where 1 = 1
+        <if test="networkId !=null">
+            and network_id = #{networkId}
+        </if>
+        <if test="networkIds!=null and networkIds.size()>0">
+            and network_id in
+            <foreach collection="networkIds" item="networkId" index="no" open="("
+                     separator="," close=")">
+                #{networkId}
+            </foreach>
+        </if>
+        <if test="ids!=null and ids.size()>0">
+            and id in
+            <foreach collection="ids" item="id" index="no" open="("
+                     separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="id !=null">
+            and id = #{id}
+        </if>
+    </select>
+
+
+    <insert id="insertPublicSubnet" parameterType="com.uca.network.extension.mapper.subnet.dto.PublicSubnetDto">
+        insert into public_subnet
+        (
+        id,
+        name,
+        tenant_id,
+        network_id,
+        cidr,
+        gateway_ip,
+        standard_attr_id,
+        ip_version,
+        service_type,
+        created_at,
+        updated_at
+        )
+        values
+        (
+        #{id},
+        #{name},
+        #{tenantId},
+        #{networkId},
+        #{cidr},
+        #{gatewayIp},
+        #{standardAttrId},
+        #{ipVersion},
+        #{serviceType},
+        #{createdAt},
+        #{updatedAt}
+        )
+    </insert>
+
+    <delete id="deletePublicSubnetById">
+        delete from public_subnet where id = #{id}
+    </delete>
+
+</mapper>
+

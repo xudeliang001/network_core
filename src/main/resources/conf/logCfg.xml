@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+
+    <!--加载配置-->
+    <springProperty scope="context" name="ConsolePattern" source="logging.console.pattern"/>
+    <springProperty scope="context" name="ConsoleCharset" source="logging.console.charset"/>
+    <springProperty scope="context" name="FilePath" source="logging.file.path"/>
+    <springProperty scope="context" name="FileName" source="logging.file.name"/>
+    <springProperty scope="context" name="FileMaxHistory" source="logging.file.max-history"/>
+    <springProperty scope="context" name="FilePattern" source="logging.file.pattern"/>
+    <springProperty scope="context" name="FileMaxSize" source="logging.file.max-file-size"/>
+    <springProperty scope="context" name="DBDriverClass" source="logging.database.driverClass"/>
+    <springProperty scope="context" name="DBUrl" source="logging.database.url"/>
+    <springProperty scope="context" name="DBUser" source="logging.database.user"/>
+    <springProperty scope="context" name="DBPassword" source="logging.database.password"/>
+
+
+    <!-- 渲染 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+
+    <!-- 控制台 -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${ConsolePattern}</pattern>
+            <charset>${ConsoleCharset}</charset>
+        </encoder>
+    </appender>
+
+    <!-- 文件日志 -->
+    <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${FilePath}/${FileName}</FileNamePattern>
+            <TimeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <MaxFileSize>${FileMaxSize}</MaxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+            <MaxHistory>${FileMaxHistory}</MaxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>[%-5level] %d{HH:mm:ss.SSS} [%thread] [%-10X{tracing_id}] %logger{36} - %msg%n
+            </pattern>
+        </layout>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${FilePattern}</pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="prod">
+        <logger name="com.uca.network" level="INFO"/>
+        <root level="ERROR">
+            <appender-ref ref="File"/>
+        </root>
+    </springProfile>
+    <springProfile name="dev">
+        <logger name="com.uca.network" level="DEBUG"/>
+        <root level="INFO">
+            <appender-ref ref="File"/>
+            <appender-ref ref="Console"/>
+        </root>
+    </springProfile>
+    <springProfile name="default">
+        <logger name="com.uca.network" level="DEBUG"/>
+        <root level="INFO">
+            <appender-ref ref="File"/>
+            <appender-ref ref="Console"/>
+        </root>
+    </springProfile>
+
+</configuration>

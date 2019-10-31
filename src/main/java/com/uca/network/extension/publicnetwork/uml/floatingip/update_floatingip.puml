@@ -1,0 +1,30 @@
+@startuml
+autonumber
+
+UCO -> FloatingIpService: 更新公网IP
+FloatingIpService --> FloatingIpService: 校验带宽是否改变
+alt 带宽改变
+else floatingip未绑定实例
+FloatingIpService -> DB:修改数据库带宽
+else floatingip绑定了实例
+FloatingIpService -> Agent:调用agent修改带宽配置
+FloatingIpService -> DB:修改数据库带宽
+end
+
+FloatingIpService --> FloatingIpService: 校验传入的EIP参数portId是否与之前的相同
+
+alt 不相同且不为空
+FloatingIpService -> Agent:调用agent下发解绑配置，并删除带宽配置
+FloatingIpService -> DB:更新floatingips和floatingips_dnat表
+end
+
+FloatingIpService --> FloatingIpService: EIP是否已经绑定了其他的实例，或者该实例是否已经绑定了其他的EIP
+alt 已经绑定
+FloatingIpService -> UCO:绑定操作终止
+end
+
+
+FloatingIpService -> Agent:调用agent下发解绑或者绑定配置，并删除或创建带宽配置
+FloatingIpService -> DB:更新floatingips和floatingips_dnat表
+FloatingIpService -> UCO:更新完成
+@enduml
