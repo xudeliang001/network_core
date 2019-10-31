@@ -9,7 +9,7 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
         <result column="admin_state_up" jdbcType="VARCHAR" property="adminStateUp"/>
-        <result column="standard_attr_id" jdbcType="BIGINT" property="standardAttrId"/>
+        <result column="standard_attr_id" jdbcType="VARCHAR" property="standardAttrId"/>
         <result column="tenant_id" jdbcType="VARCHAR" property="tenantId"/>
         <result column="created_at" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="updated_at" jdbcType="TIMESTAMP" property="updateTime"/>

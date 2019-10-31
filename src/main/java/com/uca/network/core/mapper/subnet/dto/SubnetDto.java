@@ -1,5 +1,7 @@
 package com.uca.network.core.mapper.subnet.dto;
 
+import java.util.Date;
+
 public class SubnetDto {
 
 
@@ -15,14 +17,13 @@ public class SubnetDto {
 
     private String gatewayIp;
 
-
     private int ipVersion;
 
     private String standardAttrId;
 
-    private String updateTime;
+    private Date updateTime;
 
-    private String createTime;
+    private Date createTime;
 
     public String getId() {
         return id;
@@ -88,19 +89,19 @@ public class SubnetDto {
         this.standardAttrId = standardAttrId;
     }
 
-    public String getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 }

@@ -23,7 +23,7 @@ public class PortsDto {
 
     private String deviceOwner;
 
-    private long standardAttrId;
+    private String standardAttrId;
 
     private Date createTime;
 
@@ -101,13 +101,10 @@ public class PortsDto {
         this.deviceOwner = deviceOwner;
     }
 
-    public long getStandardAttrId() {
-        return standardAttrId;
-    }
-
-    public void setStandardAttrId(long standardAttrId) {
+    public void setStandardAttrId(String standardAttrId) {
         this.standardAttrId = standardAttrId;
     }
+
 
     public Date getCreateTime() {
         return createTime;

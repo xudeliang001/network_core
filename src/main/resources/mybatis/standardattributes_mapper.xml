@@ -5,7 +5,7 @@
 
 
     <resultMap id="attrMap" type="com.uca.network.core.mapper.attr.dto.StandardattributesDto">
-        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="id" jdbcType="VARCHAR" property="id"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="resource_type" jdbcType="VARCHAR" property="resourceType"/>
         <result column="created_at" jdbcType="TIMESTAMP" property="createTime"/>
@@ -13,7 +13,7 @@
     </resultMap>
 
     <select id="queryAttrsByParam" resultMap="attrMap">
-        select t_attr.description,t_attr.id from standardattributes t_attr where 1 = 1
+        select t_attr.description,t_attr.id from tbl_standardattributes t_attr where 1 = 1
         <if test="attrids!=null and attrids.size()>0">
             and id in
             <foreach collection="attrids" item="attrId" index="no" open="("
@@ -25,7 +25,7 @@
     </select>
 
     <insert id="insertStandardattributes" parameterType="com.uca.network.core.mapper.attr.dto.StandardattributesDto">
-        insert into standardattributes
+        insert into tbl_standardattributes
         (
          id,
          description,
@@ -42,10 +42,23 @@
          #{updateTime}
         )
     </insert>
+
     <delete id="deleteStandardattributesById">
-        delete from standardattributes where id =#{id}
+        delete from tbl_standardattributes where id =#{id}
 
     </delete>
 
+
+    <delete id="deleteStandardattributesBatch" parameterType="java.util.List">
+        delete from tbl_standardattributes where 1 = 1
+        <if test="ids!=null and ids.size()>0">
+            and id in
+            <foreach collection="ids" item="id" index="no" open="("
+                     separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+
+    </delete>
 </mapper>
 

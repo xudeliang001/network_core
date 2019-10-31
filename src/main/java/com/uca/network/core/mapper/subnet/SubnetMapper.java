@@ -11,7 +11,8 @@ public interface SubnetMapper {
 
     public List<SubnetDto> querySubnetsByParam(@Param("tenantId") String projectId, @Param("networkId") String networkId,
                                                @Param("networkIds") List<String> networkIds,
-                                               @Param("ids") List<String> ids);
+                                               @Param("ids") List<String> ids,
+                                               @Param("id")String id);
 
     public int insertSubent(SubnetDto subnetDto);
 

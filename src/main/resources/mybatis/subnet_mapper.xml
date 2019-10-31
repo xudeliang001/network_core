@@ -11,18 +11,18 @@
         <result column="network_id" jdbcType="VARCHAR" property="networkId"/>
         <result column="cidr" jdbcType="VARCHAR" property="cidr"/>
         <result column="gateway_ip" jdbcType="VARCHAR" property="gatewayIp"/>
-        <result column="standard_attr_id" jdbcType="BIGINT" property="standardAttrId"/>
+        <result column="standard_attr_id" jdbcType="VARCHAR" property="standardAttrId"/>
         <result column="ip_version" jdbcType="TINYINT" property="ipVersion"/>
         <result column="created_at" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="updated_at" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <select id="querySubnetsByParam" resultMap="subnetMap">
-        SELECT * FROM subnets where 1 = 1
-        <if test="tenantId !=null">
+        SELECT * FROM tbl_subnets where 1 = 1
+        <if test="tenantId !=null and tenantId!=''">
             and tenant_id = #{tenantId}
         </if>
-        <if test="networkId !=null">
+        <if test="networkId !=null and networkId!=''">
             and network_id = #{networkId}
         </if>
         <if test="networkIds!=null and networkIds.size()>0">
@@ -46,7 +46,7 @@
 
     <insert id="insertSubent" parameterType="com.uca.network.core.mapper.subnet.dto.SubnetDto">
 
-      insert into subnets(
+      insert into tbl_subnets(
       id,
       name,
       tenant_id,
@@ -73,7 +73,7 @@
       )
     </insert>
     <delete id="deleteSubnetByParam" parameterType="java.util.Map">
-        delete from subents where 1 = 1
+        delete from tbl_subnets where 1 = 1
         <if test="param.id!=null">
            and id = #{param.id}
         </if>
