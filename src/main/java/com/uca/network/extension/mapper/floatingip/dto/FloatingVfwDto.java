@@ -1,4 +1,4 @@
-package com.uca.network.extension.plugin.floatingip.mapper;
+package com.uca.network.extension.mapper.floatingip.dto;
 
 import lombok.Data;
 

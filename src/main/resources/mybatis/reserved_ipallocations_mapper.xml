@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.uca.network.extension.mapper.reservedip.ReservedIpallocationsMapper">
 
-    <select id="queryReservedIpByIpAddress" resultType="com.uca.network.extension.mapper.reservedip.dto.reservedIpDto">
+    <select id="queryReservedIpByIpAddress" resultType="com.uca.network.extension.mapper.reservedip.dto.ReservedIpDto">
         select *  from ipallocations where 1 = 1
         <if test="subnetId !=null ">
             and subnet_id = #{subnetId}
@@ -14,13 +14,13 @@
 
     </select>
 
-    <select id="queryReservedIpByAllocated" resultType="com.uca.network.extension.mapper.reservedip.dto.reservedIpDto">
+    <select id="queryReservedIpByAllocated" resultType="com.uca.network.extension.mapper.reservedip.dto.ReservedIpDto">
         select *  from ipallocations where 1 = 1
             and allocated = 2
     </select>
 
 
-    <insert id = "insertReservedIp" parameterType="com.uca.network.extension.mapper.reservedip.dto.reservedIpDto">
+    <insert id = "insertReservedIp" parameterType="com.uca.network.extension.mapper.reservedip.dto.ReservedIpDto">
         insert into ipallocations
         (
         ip_address,
