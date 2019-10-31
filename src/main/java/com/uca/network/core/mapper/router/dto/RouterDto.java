@@ -28,7 +28,7 @@ public class RouterDto implements Serializable {
     private String tenantId;
 
     @JSONField(serialize=false)
-    private long standardAttrId;
+    private String standardAttrId;
 
     private String description;
 
@@ -84,11 +84,11 @@ public class RouterDto implements Serializable {
         return adminStateUp;
     }
 
-    public long getStandardAttrId() {
+    public String getStandardAttrId() {
         return standardAttrId;
     }
 
-    public void setStandardAttrId(long standardAttrId) {
+    public void setStandardAttrId(String standardAttrId) {
         this.standardAttrId = standardAttrId;
     }
 

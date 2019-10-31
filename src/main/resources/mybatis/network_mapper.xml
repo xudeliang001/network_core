@@ -12,6 +12,7 @@
         <result column="admin_state_up" jdbcType="VARCHAR" property="adminStateUp"/>
         <result column="created_at" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="updated_at" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="standard_attr_id" jdbcType="VARCHAR" property="standardAttrId"/>
 
     </resultMap>
 

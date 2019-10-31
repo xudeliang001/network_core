@@ -13,4 +13,6 @@ public interface StandardattributesMapper {
     public int insertStandardattributes(StandardattributesDto standardattributesDto);
 
     public void deleteStandardattributesById(@Param("id") String id);
+
+    public void deleteStandardattributesBatch(@Param("ids") List<String> ids);
 }

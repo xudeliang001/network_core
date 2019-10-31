@@ -13,7 +13,7 @@
 
     <select id="queryIpAllocationPoolsByParam" resultMap="ipAllocationsPoolsMap">
         select  t_ipallocationpools.id AS id,t_ipallocationpools.subnet_id as subnet_id,
-        t_ipallocationpools.first_ip as first_ip, t_ipallocationpools.last_ip as last_ip from ipallocationpools t_ipallocationpools
+        t_ipallocationpools.first_ip as first_ip, t_ipallocationpools.last_ip as last_ip from tbl_ipallocationpools t_ipallocationpools
         where 1 = 1
         <if test="subnetIds!=null and subnetIds.size()>0">
             and subnet_id in
@@ -26,7 +26,7 @@
     </select>
 
     <insert id = "insertIpAllocationPools" parameterType="com.uca.network.core.mapper.ipallocationpools.dto.IpaAllocationpoolsDto">
-      insert into ipallocationpools
+      insert into tbl_ipallocationpools
       (id,
       subnet_id,
       first_ip,
@@ -42,12 +42,19 @@
     </insert>
 
     <delete id = "deleteIpAllocationPoolsByParam" parameterType="java.util.Map">
-        delete from ipallocationpools where 1 = 1
+        delete from tbl_ipallocationpools where 1 = 1
         <if test="param.id!=null">
             and id = #{param.id}
         </if>
         <if test="param.subnetId!=null">
             and subnet_id = #{param.subnetId}
+        </if>
+        <if test="param.subnetIds!=null and param.subnetIds.size>0">
+            and subnet_id in
+            <foreach collection="param.subnetIds" item="subnetId" index="no" open="("
+                     separator="," close=")">
+                #{subnetId}
+            </foreach>
         </if>
     </delete>
 </mapper>

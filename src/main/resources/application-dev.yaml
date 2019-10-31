@@ -60,15 +60,18 @@ db:
   logSlowSql: true
   slowSqlMillis: 200
 
-mybatis:
-  mapper-locations: classpath:mybatis/*.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  type-aliases-package: com.uca.network
+#mybatis:
+#  mapper-locations: classpath:mybatis/*.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  type-aliases-package: com.uca.network
 
 network:
-  dns:
+  dns: 220.194.70.15,113.207.55.15
+  ipObligateHigh: 3
+  ipObligateLow: 1
   swaggerEnable: true
+
 
 logging:
   exception:

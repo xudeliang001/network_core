@@ -23,6 +23,8 @@ public class NetworkDto {
 
     private Date updateTime;
 
+    private String standardAttrId;
+
     public String getId() {
         return id;
     }
@@ -77,5 +79,13 @@ public class NetworkDto {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getStandardAttrId() {
+        return standardAttrId;
+    }
+
+    public void setStandardAttrId(String standardAttrId) {
+        this.standardAttrId = standardAttrId;
     }
 }

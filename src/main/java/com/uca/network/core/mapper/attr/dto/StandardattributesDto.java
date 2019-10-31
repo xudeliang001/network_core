@@ -1,22 +1,24 @@
 package com.uca.network.core.mapper.attr.dto;
 
+import java.util.Date;
+
 public class StandardattributesDto {
 
-    private long id;
+    private String id;
 
     private String description;
 
     private String resourceType;
 
-    private String updateTime;
+    private Date updateTime;
 
-    private String createTime;
+    private Date createTime;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -36,19 +38,19 @@ public class StandardattributesDto {
         this.resourceType = resourceType;
     }
 
-    public String getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
