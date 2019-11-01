@@ -1,11 +1,10 @@
-package com.uca.network.core.mapper.network.dto;
+package com.uca.network.core.network.vo;
+
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
-
-public class NetworkDto {
+public class NetworkVo {
 
     private String id;
 
@@ -17,15 +16,15 @@ public class NetworkDto {
 
     private String status;
 
+    @JsonProperty("tenant_id")
+    @JSONField(name = "tenant_id")
     private String tenantId;
 
-    private Date createTime;
-
-    private Date updateTime;
-
+    @JSONField(name = "standard_attr_id")
+    @JsonProperty("standard_attr_id")
     private String standardAttrId;
 
-    private int mtu;
+    private String description;
 
     public String getId() {
         return id;
@@ -67,21 +66,6 @@ public class NetworkDto {
         this.tenantId = tenantId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 
     public String getStandardAttrId() {
         return standardAttrId;
@@ -91,11 +75,11 @@ public class NetworkDto {
         this.standardAttrId = standardAttrId;
     }
 
-    public int getMtu() {
-        return mtu;
+    public String getDescription() {
+        return description;
     }
 
-    public void setMtu(int mtu) {
-        this.mtu = mtu;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

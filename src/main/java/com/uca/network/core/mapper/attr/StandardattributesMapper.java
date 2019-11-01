@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface StandardattributesMapper {
 
-    public List<StandardattributesDto> queryAttrsByParam(@Param("attrids") List<Long> attrids);
+    public List<StandardattributesDto> queryAttrsByParam(@Param("attrids") List<String> attrids);
 
     public int insertStandardattributes(StandardattributesDto standardattributesDto);
 
