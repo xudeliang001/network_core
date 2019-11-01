@@ -21,7 +21,7 @@
         <result column="extra" jdbcType="VARCHAR" property="extra"/>
     </resultMap>-->
 
-    <select id="queryFloatingIpsByParam" resultMap="com.uca.network.extension.mapper.floatingip.dto.FloatingIpDto">
+    <select id="queryFloatingIpsByParam" resultType="com.uca.network.extension.mapper.floatingip.dto.FloatingIpDto">
         select *
         from floatingips where 1 = 1
         <if test="projectId!=null">
