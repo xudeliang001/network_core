@@ -17,12 +17,12 @@ public interface DeviceFloatingipRouteMapper {
      * @param floatingIpAddress
      * @return
      */
-    List<DeviceFloatingipRouteDto> queryFloatingipRouteByParam(@Param("deviceIp") String deviceIp, @Param("floatingIpAddress") String floatingIpAddress);
+    List<DeviceFloatingipRouteDto> queryDeviceFloatingipRouteByParam(@Param("deviceIp") String deviceIp, @Param("floatingIpAddress") String floatingIpAddress);
 
     /**
-     * @param deviceFloatingipRouteDto
+     * @param deviceFloatingipRouteDtos
      * @return
      */
-    String insertFloatingipRoute(DeviceFloatingipRouteDto deviceFloatingipRouteDto);
+    List<String> insertDeviceFloatingipRoute(List<DeviceFloatingipRouteDto> deviceFloatingipRouteDtos);
 
 }

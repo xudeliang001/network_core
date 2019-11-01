@@ -4,8 +4,8 @@
 <mapper namespace="com.uca.network.extension.mapper.floatingip.DeviceFloatingipRouteMapper">
 
 
-    <select id="queryFloatingipRouteByParam">
-        select * from device_exit_route
+    <select id="queryDeviceFloatingipRouteByParam">
+        select * from device_floatingip_route
         where 1 = 1
         <if test="deviceIp!=null">
             and device_ip = #{deviceIp}
@@ -16,9 +16,9 @@
     </select>
 
 
-    <insert id = "insertFloatingipRoute" parameterType="com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingipRouteDto"
+    <insert id = "insertDeviceFloatingipRoute" parameterType="com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingipRouteDto"
             useGeneratedKeys="true" keyProperty="id">
-        insert into vroute
+        insert into device_floatingip_route
         (
         floating_ip_address,
         tx_averateLimit,
@@ -26,12 +26,14 @@
         device_ip
         )
         values
+        <foreach collection ="list" item="route" separator =",">
         (
-        #{floatingIpAddress},
-        #{txAverateLimit},
-        #{rxAverateLimit},
-        #{deviceIp}
+        #{route.floatingIpAddress},
+        #{route.txAverateLimit},
+        #{route.rxAverateLimit},
+        #{route.deviceIp}
         )
+        </foreach >
     </insert>
 
 

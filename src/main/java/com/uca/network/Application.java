@@ -1,8 +1,6 @@
 package com.uca.network;
 
 import com.alibaba.fastjson.JSON;
-import com.uca.network.core.subnet.service.SubnetService;
-import com.uca.network.core.subnet.vo.SubnetVo;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,7 +25,7 @@ import java.util.UUID;
 public class Application {
     public static void main(String[] args) {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(Application.class, args);
-//        Map map = applicationContext.getBeansOfType(SubnetService.class);
+/*//        Map map = applicationContext.getBeansOfType(SubnetService.class);
         SubnetService subnetService = applicationContext.getBean(SubnetService.class);
 //        SubnetVo subnetVo = new SubnetVo();
 //        subnetVo.setName("test123");
@@ -44,7 +42,7 @@ public class Application {
         System.out.println(JSON.toJSONString(subnetVos));
 
         subnetVos = subnetService.querySubnets("2d495a5a-64ca-43ae-bdb3-d5781d56bf78","");
-        subnetService.deleteSubent(subnetVos.get(0).getId(),null);
+        subnetService.deleteSubent(subnetVos.get(0).getId(),null);*/
     }
 
     /**
