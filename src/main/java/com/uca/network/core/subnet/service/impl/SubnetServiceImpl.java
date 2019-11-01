@@ -14,11 +14,14 @@ import com.uca.network.core.mapper.ipallocationpools.IpallocationPoolsMapper;
 import com.uca.network.core.mapper.ipallocationpools.dto.IpaAllocationpoolsDto;
 import com.uca.network.core.mapper.subnet.SubnetMapper;
 import com.uca.network.core.mapper.subnet.dto.SubnetDto;
+import com.uca.network.core.network.service.impl.NetworkServiceImpl;
 import com.uca.network.core.subnet.controller.model.SubnetReq;
 import com.uca.network.core.subnet.service.SubnetService;
 import com.uca.network.core.subnet.vo.SubnetVo;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,8 @@ import java.util.stream.Collectors;
 
 @Service(value = "subnetServiceImpl")
 public class SubnetServiceImpl implements SubnetService {
+
+    private static final Logger logger = LoggerFactory.getLogger(SubnetServiceImpl.class);
 
     @Autowired
     private SubnetMapper subnetMapper;
@@ -245,7 +250,7 @@ public class SubnetServiceImpl implements SubnetService {
                     subnetVo.setIpPools(ipPool);
                 }
                 if (attrMap.containsKey(subnetDto.getStandardAttrId())) {
-                    subnetVo.setDescription(attrMap.get(subnetDto.getId()).get(0).getDescription());
+                    subnetVo.setDescription(attrMap.get(subnetDto.getStandardAttrId()).get(0).getDescription());
                 }
                 subentVos.add(subnetVo);
 

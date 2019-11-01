@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller(value = "coreSubentController")
+@RestController(value = "coreSubentController")
 @RequestMapping(value = "/v1.0/subnets")
 public class SubnetController {
 
@@ -41,7 +41,7 @@ public class SubnetController {
     }
 
     @GetMapping("/query")
-    public RestfulEntity querySubnets(String tenantId, @RequestParam(required = false) String networkId) {
+    public RestfulEntity querySubnets(@RequestParam String tenantId, @RequestParam(required = false) String networkId) {
         List<SubnetVo> result = subnetService.querySubnets(tenantId, networkId);
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("subnets", result);

@@ -1,6 +1,7 @@
 package com.uca.network.core.subnet.vo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -9,16 +10,19 @@ public class SubnetVo {
 
     private String id;
 
+    @JsonProperty("tenant_id")
     @JSONField(name = "tenant_id")
     private String tenantId;
 
     private String name;
 
+    @JsonProperty("network_id")
     @JSONField(name = "network_id")
     private String networkId;
 
     private String cidr;
 
+    @JsonProperty("gateway_ip")
     @JSONField(name = "gateway_ip")
     private String gatewayIp;
 
@@ -27,9 +31,11 @@ public class SubnetVo {
     /**
      * startIp  lastIp
      */
+    @JsonProperty("allocation_pools")
     @JSONField(name = "allocation_pools")
     private Map<String, Object> ipPools;
 
+    @JsonProperty("dns_nameservers")
     @JSONField(name = "dns_nameservers")
     private List<String> dns;
 
