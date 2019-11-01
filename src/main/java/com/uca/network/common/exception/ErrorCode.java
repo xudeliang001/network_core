@@ -6,7 +6,11 @@ package com.uca.network.common.exception;
 
 public enum ErrorCode {
     FIELD_ERROR(1000),
-    NAME_INVALID(1002, "输入参数不符合格式要求");
+    NAME_INVALID(1002, "输入参数不符合格式要求"),
+
+    ERR_SUBNET_NOT_EXISTS(2001, "子网不存在"),
+
+    ERR_NETWORK_NOT_EXISTS(3001, "网络不存在");
 
 
     private final Integer val;

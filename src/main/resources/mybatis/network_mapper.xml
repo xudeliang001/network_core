@@ -9,15 +9,16 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="tenant_id" jdbcType="VARCHAR" property="tenantId"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
-        <result column="admin_state_up" jdbcType="VARCHAR" property="adminStateUp"/>
+        <result column="admin_state_up" jdbcType="TINYINT" property="adminStateUp"/>
         <result column="created_at" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="updated_at" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="standard_attr_id" jdbcType="VARCHAR" property="standardAttrId"/>
+        <result column="mtu" jdbcType="TINYINT" property="mtu"/>
 
     </resultMap>
 
     <select id="queryNetworksByParam" resultMap="networkMap">
-        SELECT * FROM networks where 1 = 1
+        SELECT * FROM tbl_networks where 1 = 1
         <if test="tenantId !=null">
             and tenant_id = #{tenantId}
         </if>
@@ -35,7 +36,7 @@
 
 
     <insert id="insertNetwork" parameterType="com.uca.network.core.mapper.network.dto.NetworkDto">
-        insert into networks
+        insert into tbl_networks
         (
         id,
         name,
@@ -43,23 +44,27 @@
         status,
         admin_state_up,
         created_at,
-        updated_at
+        updated_at,
+        standard_attr_id,
+        mtu
         )
         values
         (
         #{id},
         #{name},
-        #{tenant_id},
+        #{tenantId},
         #{status},
-        #{admin_state_up},
+        #{adminStateUp},
         #{createTime},
-        #{updateTime}
+        #{updateTime},
+        #{standardAttrId},
+        #{mtu}
         )
     </insert>
 
     <delete id="deleteNetworkById">
 
-        delete from network where id = #{id}
+        delete from tbl_networks where id = #{id}
     </delete>
 
 
