@@ -51,7 +51,7 @@ public class FloatingipPluginService {
         DeviceFloatingVfwDto deviceFloatingVfwDto = new DeviceFloatingVfwDto();
 
         switch (floatingIpToPluginDto.getType()) {
-            case "dsnat":
+            case "dnat":
                 if (floatingIpToPluginDto.getFixedIpAddress() == null || floatingIpToPluginDto.getFloatingIpAddress() == null){
                     logger.error("dsnat:param is invalid!");
                     return false;
@@ -64,7 +64,8 @@ public class FloatingipPluginService {
                 //3、封装DeviceFloatingVfwDto
 
                 break;
-            case "dnat":
+
+            case "dsnat":
                 boolean result = floatingIpToPluginDto.getFixedIpAddress() == null || floatingIpToPluginDto.getFloatingIpAddress() == null ||
                         floatingIpToPluginDto.getProtocal() == null || (floatingIpToPluginDto.getFixedIpNum() == null && floatingIpToPluginDto.getFloatingIpNum() != null) ||
                         (floatingIpToPluginDto.getFixedIpNum() != null && floatingIpToPluginDto.getFloatingIpNum() == null);
@@ -76,9 +77,16 @@ public class FloatingipPluginService {
                 //组装存库数据和下发agent数据
                 //1、获取主机所属的vpn-instance的id，如： 2jn9lr97r19f5p645sotugnglq
 
-                //2、封装DeviceFloatingVfwDto
+                //2、并根据vpn-insantance-id 组合acl name，如： SDN_NAT_ACL_2jn9lr97r19f5p645sotugnglq
+
+                //3、获取不重复的address-group的id
+
+                //4、根据vpn-insantance-id 组合address-group name,如：SDN_ADDR_2jn9lr97r19f5p645sotugnglq
+
+                //5、封装DeviceFloatingVfwDto
 
                 break;
+
             case "snat":
                 if (CollectionUtils.isEmpty(floatingIpToPluginDto.getSubnetCidrs()) || floatingIpToPluginDto.getFloatingIpAddress() == null){
                     logger.error("snat:param is invalid!");
@@ -86,15 +94,15 @@ public class FloatingipPluginService {
                 }
 
                 //组装存库数据和下发agent数据
-                //获取主机所属的vpn-instance的id，如： 2jn9lr97r19f5p645sotugnglq
+                //1、获取主机所属的vpn-instance的id，如： 2jn9lr97r19f5p645sotugnglq
 
-                //1、并根据vpn-insantance-id 组合acl name，如： SDN_NAT_ACL_2jn9lr97r19f5p645sotugnglq
+                //2、并根据vpn-insantance-id 组合acl name，如： SDN_NAT_ACL_2jn9lr97r19f5p645sotugnglq
 
-                //2、获取不重复的address-group的id
+                //3、获取不重复的address-group的id
 
-                //3、根据vpn-insantance-id 组合address-group name,如：SDN_ADDR_2jn9lr97r19f5p645sotugnglq
+                //4、根据vpn-insantance-id 组合address-group name,如：SDN_ADDR_2jn9lr97r19f5p645sotugnglq
 
-                //4、封装DeviceFloatingVfwDto
+                //5、封装DeviceFloatingVfwDto
 
                 break;
             default:
@@ -148,7 +156,7 @@ public class FloatingipPluginService {
 
         //校验不同类型 dnat、dsnat、snat 传入的参数
         switch (floatingIpToPluginDto.getType()) {
-            case "dsnat":
+            case "dnat":
                 if (floatingIpToPluginDto.getFloatingIpAddress() == null){
                     logger.error("dsnat:param is invalid!");
                     return false;
@@ -160,7 +168,7 @@ public class FloatingipPluginService {
                 //删除带宽配置
 
                 break;
-            case "dnat":
+            case "dsnat":
                 boolean result = floatingIpToPluginDto.getFixedIpAddress() == null || floatingIpToPluginDto.getFloatingIpAddress() == null ||
                         floatingIpToPluginDto.getProtocal() == null || (floatingIpToPluginDto.getFixedIpNum() == null && floatingIpToPluginDto.getFloatingIpNum() != null) ||
                         (floatingIpToPluginDto.getFixedIpNum() != null && floatingIpToPluginDto.getFloatingIpNum() == null);
