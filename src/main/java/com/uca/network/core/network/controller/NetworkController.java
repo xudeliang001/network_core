@@ -1,6 +1,8 @@
 package com.uca.network.core.network.controller;
 
 
+import com.uca.network.common.exception.CommonException;
+import com.uca.network.common.exception.ErrorCode;
 import com.uca.network.common.utils.RestfulEntity;
 import com.uca.network.core.network.controller.model.NetworkReq;
 import com.uca.network.core.network.service.NetworkService;
@@ -48,7 +50,14 @@ public class NetworkController {
 
     @PostMapping("/{networkId}/delete")
     public RestfulEntity deleteSubent(String tenantId, @PathVariable String networkId) {
-        networkService.deleteNetwork(tenantId, networkId);
-        return RestfulEntity.getSuccess(true);
+        try {
+            networkService.deleteNetwork(tenantId, networkId);
+            return RestfulEntity.getSuccess(true);
+        } catch (CommonException e) {
+            return RestfulEntity.getFailure(e.getMessage());
+        } catch (Exception ex) {
+            return RestfulEntity.getFailure(false);
+        }
+
     }
 }

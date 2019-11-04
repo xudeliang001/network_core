@@ -1,6 +1,7 @@
 package com.uca.network.core.subnet.controller;
 
 
+import com.uca.network.common.exception.CommonException;
 import com.uca.network.common.utils.RestfulEntity;
 import com.uca.network.core.subnet.controller.model.SubnetReq;
 import com.uca.network.core.subnet.service.SubnetService;
@@ -8,7 +9,6 @@ import com.uca.network.core.subnet.vo.SubnetVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -49,8 +49,14 @@ public class SubnetController {
     }
 
     @PostMapping("/{subnetId}/delete")
-    public RestfulEntity deleteSubent(String tenantId, @PathVariable  String subnetId) {
-        subnetService.deleteSubent(tenantId, subnetId, null);
+    public RestfulEntity deleteSubent(String tenantId, @PathVariable String subnetId) {
+        try {
+            subnetService.deleteSubent(tenantId, subnetId, null);
+        } catch (CommonException e) {
+            return RestfulEntity.getFailure(e.getMessage());
+        } catch (Exception e) {
+            return RestfulEntity.getFailure(false);
+        }
         return RestfulEntity.getSuccess(true);
     }
 

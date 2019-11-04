@@ -164,7 +164,7 @@ public class SubnetServiceImpl implements SubnetService {
             subnetMapper.deleteSubnetByParam(param);
 
         } else {
-            String msg = String.format("networkId : %s , subnetId : %s , tenantId : %s", networkId, subnetId, tenantId);
+            String msg = String.format("networkId : %s , subnetId : %s , tenantId : %s, subnet not exists", networkId, subnetId, tenantId);
 
             ErrorInfo errorInfo = new ErrorInfo(ErrorCode.ERR_SUBNET_NOT_EXISTS, "subnet", msg);
 

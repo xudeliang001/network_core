@@ -26,6 +26,8 @@ public class SubnetVo {
     @JSONField(name = "gateway_ip")
     private String gatewayIp;
 
+    @JsonProperty("ip_version")
+    @JSONField(name = "ip_version")
     private int ipVersion;
 
     /**

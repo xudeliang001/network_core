@@ -130,7 +130,7 @@ public class NetworkServiceImpl implements NetworkService {
             throw new CommonException(errorInfo);
         }
 
-        //删除虚拟网卡
+        //删除虚拟网卡(绑定路由器的)
         if (portsDto != null) {
             portsService.deletePort(tenantId,portsDto.getId());
         }
