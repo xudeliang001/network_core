@@ -99,9 +99,9 @@ public class NetworkServiceImpl implements NetworkService {
     @Override
     public void deleteNetwork(String tenantId, String networkId) {
         logger.info("NetworkServiceImpl deleteNetwork begin : {},{}", tenantId, networkId);
-        List<NetworkDto> networkDtos = networkMapper.queryNetworksByParam(tenantId, null, null);
+        List<NetworkDto> networkDtos = networkMapper.queryNetworksByParam(tenantId, networkId, null);
         if (CollectionUtils.isEmpty(networkDtos)) {
-            String msg = String.format("networkId : %s , tenantId : %s", networkId, tenantId);
+            String msg = String.format("networkId : %s , tenantId : %s, network not exists", networkId, tenantId);
 
             ErrorInfo errorInfo = new ErrorInfo(ErrorCode.ERR_NETWORK_NOT_EXISTS, "network", msg);
             throw new CommonException(errorInfo);
