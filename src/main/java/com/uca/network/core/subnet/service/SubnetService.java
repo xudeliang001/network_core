@@ -13,7 +13,7 @@ public interface SubnetService {
 
     public List<SubnetVo> querySubnets(String tenantId);
 
-    public List<SubnetVo> querySubnets(String projectId, String networkId);
+    public List<SubnetVo> querySubnets(String tenantId, String networkId);
 
     public SubnetVo querySubnetDetail(String tenantId, String subnetId);
 

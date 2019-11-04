@@ -49,7 +49,7 @@ public class SubnetController {
     }
 
     @PostMapping("/{subnetId}/delete")
-    public RestfulEntity deleteSubent(String tenantId, String subnetId) {
+    public RestfulEntity deleteSubent(String tenantId, @PathVariable  String subnetId) {
         subnetService.deleteSubent(tenantId, subnetId, null);
         return RestfulEntity.getSuccess(true);
     }

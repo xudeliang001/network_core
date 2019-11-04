@@ -14,16 +14,17 @@
         <result column="status" jdbcType="VARCHAR" property="status"/>
         <result column="device_owner" jdbcType="VARCHAR" property="deviceOwner"/>
         <result column="device_id" jdbcType="VARCHAR" property="deviceId"/>
-        <result column="standard_attr_id" jdbcType="BIGINT" property="standardAttrId"/>
+        <result column="standard_attr_id" jdbcType="VARCHAR" property="standardAttrId"/>
         <result column="created_at" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="updated_at" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <select id="queryPortsByParam" resultMap="portsMap">
-        select id,tenadnt_id,name,network_id,mac_address,admin_state_up,status,device_id,device_owner,
+        select id,tenant_id,name,network_id,mac_address,admin_state_up,status,device_id,device_owner,
         standard_attr_id,created_at,updated_at
         from
-        ports t_attr where 1 = 1
+        tbl_ports
+        where 1 = 1
 
         <if test="deviceId!=null">
             and device_id = #{deviceId}
@@ -62,7 +63,7 @@
         </if>
 
         <if test="ids!=null and ids.size()>0">
-            and device_id in
+            and id in
             <foreach collection="ids" item="id" index="no" open="("
                      separator="," close=")">
                 #{id}
@@ -70,8 +71,92 @@
         </if>
 
     </select>
+    <insert id="insertPort" parameterType="com.uca.network.core.mapper.ports.dto.PortsDto">
+        insert into tbl_ports
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id !=''">
+                id,
+            </if>
+            <if test="tenantId!=null and tenantId!=''">
+                tenant_id,
+            </if>
+            <if test="name != null and name!=''">
+                name,
+            </if>
+            <if test="macAddress != null and macAddress!=''">
+                mac_address,
+            </if>
+            <if test="networkId!=null and networkId!=''">
+                network_id,
+            </if>
+            <if test="adminStateUp != null and adminStateUp!=''">
+                admin_state_up,
+            </if>
+            <if test="status != null and status!=''">
+                status,
+            </if>
+            <if test="deviceId != null and deviceId!=''">
+                device_id,
+            </if>
+            <if test="deviceOwner != null and deviceOwner!=''">
+                device_owner,
+            </if>
+            <if test="standardAttrId != null and standardAttrId!=''">
+                standard_attr_id,
+            </if>
+            <if test="createTime != null">
+                created_at,
+            </if>
+            <if test="updateTime != null">
+                updated_at,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id !=''">
+                #{id},
+            </if>
+            <if test="tenantId !=null and tenantId!=''">
+                #{tenantId},
+            </if>
+            <if test="name != null and name!=''">
+                #{name},
+            </if>
+            <if test="macAddress != null and macAddress!=''">
+                #{macAddress},
+            </if>
+            <if test="networkId!=null and networkId!=''">
+                #{networkId},
+            </if>
+            <if test="adminStateUp != null and adminStateUp!=''">
+                #{adminStateUp},
+            </if>
+            <if test="status != null and status!=''">
+                #{status},
+            </if>
+            <if test="deviceId != null and deviceId!=''">
+                #{deviceId},
+            </if>
+            <if test="deviceOwner != null and deviceOwner!=''">
+                #{deviceOwner},
+            </if>
+            <if test="standardAttrId != null and standardAttrId!=''">
+                #{standardAttrId},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
 
 
+        </trim>
+    </insert>
+
+    <delete id="deletPortById">
+        delete  from tbl_ports where id = #{id} and tenant_id = #{tenantId}
+    </delete>
 
 
 </mapper>

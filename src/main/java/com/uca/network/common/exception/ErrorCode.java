@@ -10,7 +10,13 @@ public enum ErrorCode {
 
     ERR_SUBNET_NOT_EXISTS(2001, "子网不存在"),
 
-    ERR_NETWORK_NOT_EXISTS(3001, "网络不存在");
+    ERR_NETWORK_NOT_EXISTS(3001, "网络不存在"),
+
+    ERR_NETWORK_SUBNET_NOT_EXISTS(3002, "网络下没有子网"),
+
+    ERR_NETWORK_USED(3003, "网络被使用"),
+
+    ERR_ROUTER_NOT_EXISTS(4001, "路由器不存在");
 
 
     private final Integer val;
@@ -34,6 +40,7 @@ public enum ErrorCode {
     public Integer getVal() {
         return val;
     }
+
     public String getMessage() {
         if (params != null) {
             return String.format(message, params);

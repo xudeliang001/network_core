@@ -18,7 +18,7 @@
 
     <select id="queryRoutersByParam" resultMap="routerMap">
         select id, name , status , admin_state_up, standard_attr_id , tenant_id,created_at,updated_at from
-        routers where
+        tbl_routers where
         1 = 1
         <if test="tenantId !=null">
             and tenant_id = #{tenantId}
@@ -35,7 +35,7 @@
         </if>
     </select>
     <insert id="insertRouter" parameterType="com.uca.network.core.mapper.router.dto.RouterDto">
-        insert into routers
+        insert into tbl_routers
         (
           id,
           name ,
@@ -52,7 +52,7 @@
           #{status},
           #{adminStateUp},
           #{standardAttrId},
-          #{tenant_id},
+          #{tenantId},
           #{createTime},
           #{updateTime}
 
@@ -60,7 +60,7 @@
     </insert>
     <delete id="deleteRouterById">
 
-        delete from router where id = #{id}
+        delete from tbl_routers where id = #{id}
     </delete>
 
 

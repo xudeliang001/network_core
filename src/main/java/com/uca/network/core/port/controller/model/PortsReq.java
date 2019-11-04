@@ -1,10 +1,6 @@
-package com.uca.network.core.mapper.ports.dto;
+package com.uca.network.core.port.controller.model;
 
-import java.util.Date;
-
-
-public class PortsDto {
-
+public class PortsReq {
     private String id;
 
     private String tenantId;
@@ -15,19 +11,14 @@ public class PortsDto {
 
     private String macAddress;
 
-    private Boolean adminStateUp;
-
     private String status;
 
     private String deviceId;
 
     private String deviceOwner;
 
-    private String standardAttrId;
+    private String subnetId;
 
-    private Date createTime;
-
-    private Date updateTime;
 
     public String getId() {
         return id;
@@ -69,14 +60,6 @@ public class PortsDto {
         this.macAddress = macAddress;
     }
 
-    public Boolean getAdminStateUp() {
-        return adminStateUp;
-    }
-
-    public void setAdminStateUp(Boolean adminStateUp) {
-        this.adminStateUp = adminStateUp;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -101,30 +84,11 @@ public class PortsDto {
         this.deviceOwner = deviceOwner;
     }
 
-    public void setStandardAttrId(String standardAttrId) {
-        this.standardAttrId = standardAttrId;
+    public String getSubnetId() {
+        return subnetId;
     }
 
-
-    public Date getCreateTime() {
-        return createTime;
+    public void setSubnetId(String subnetId) {
+        this.subnetId = subnetId;
     }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getStandardAttrId() {
-        return standardAttrId;
-    }
-
-
 }

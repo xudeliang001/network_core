@@ -17,7 +17,7 @@
     <select id="queryIpAllocationsByParam" resultMap="ipAllocationsMap">
         select t_ipallocations.ip_address AS ip_address,t_ipallocations.subnet_id as subnet_id,
         t_ipallocations.network_id as network_id, t_ipallocations.port_id as port_id,
-        created_at , updated_at from ipallocations t_ipallocations
+        created_at , updated_at from tbl_ipallocations t_ipallocations
         where 1 = 1
         <if test="portIds!=null and portIds.size()>0">
             and port_id in
@@ -43,7 +43,7 @@
 
     </select>
     <insert id = "insertIpAllocations" parameterType="com.uca.network.core.mapper.ipallocation.dto.IpAllocationsDto">
-        insert into ipallocations
+        insert into tbl_ipallocations
         (
         port_id,
         ip_address,
@@ -64,7 +64,7 @@
     </insert>
 
     <delete id="deleteIpAllocationsByPortId">
-        delete from ipallocations where port_id = #{portId}
+        delete from tbl_ipallocations where port_id = #{portId}
 
     </delete>
 

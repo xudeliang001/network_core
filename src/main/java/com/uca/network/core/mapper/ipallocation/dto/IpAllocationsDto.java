@@ -1,5 +1,7 @@
 package com.uca.network.core.mapper.ipallocation.dto;
 
+import java.util.Date;
+
 public class IpAllocationsDto {
 
 
@@ -13,6 +15,10 @@ public class IpAllocationsDto {
 
 
     private String networkId;
+
+    private Date createTime;
+
+    private Date updateTime;
 
     public String getPortId() {
         return portId;
@@ -44,5 +50,21 @@ public class IpAllocationsDto {
 
     public void setNetworkId(String networkId) {
         this.networkId = networkId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

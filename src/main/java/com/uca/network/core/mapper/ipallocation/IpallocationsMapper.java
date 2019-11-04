@@ -12,6 +12,7 @@ public interface IpallocationsMapper {
                                                             @Param("networkIds") List<String> networkIds);
 
     public int insertIpAllocations(IpAllocationsDto ipAllocationsDto);
+    
 
     public void deleteIpAllocationsByPortId(@Param("portId") String portId);
 

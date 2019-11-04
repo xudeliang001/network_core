@@ -1,5 +1,6 @@
 package com.uca.network.core.network.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.uca.network.common.exception.CommonException;
 import com.uca.network.common.exception.ErrorCode;
 import com.uca.network.common.exception.ErrorInfo;
@@ -8,9 +9,12 @@ import com.uca.network.core.mapper.attr.StandardattributesMapper;
 import com.uca.network.core.mapper.attr.dto.StandardattributesDto;
 import com.uca.network.core.mapper.network.NetworkMapper;
 import com.uca.network.core.mapper.network.dto.NetworkDto;
+import com.uca.network.core.mapper.ports.PortsMapper;
+import com.uca.network.core.mapper.ports.dto.PortsDto;
 import com.uca.network.core.network.controller.model.NetworkReq;
 import com.uca.network.core.network.service.NetworkService;
 import com.uca.network.core.network.vo.NetworkVo;
+import com.uca.network.core.port.service.PortsService;
 import com.uca.network.core.subnet.service.SubnetService;
 import com.uca.network.core.subnet.vo.SubnetVo;
 import org.slf4j.Logger;
@@ -38,9 +42,13 @@ public class NetworkServiceImpl implements NetworkService {
     @Autowired
     private SubnetService subnetService;
 
+    @Autowired
+    private PortsService portsService;
+
     @Transactional
     @Override
     public NetworkVo createNetwork(NetworkReq networkReq) {
+        logger.info("NetworkServiceImpl createNetwork begin : {} ", JSON.toJSONString(networkReq));
 
         String networkId = UUID.randomUUID().toString().replace("-", "");
         Date createTime = new Date();
@@ -90,6 +98,7 @@ public class NetworkServiceImpl implements NetworkService {
     @Transactional
     @Override
     public void deleteNetwork(String tenantId, String networkId) {
+        logger.info("NetworkServiceImpl deleteNetwork begin : {},{}", tenantId, networkId);
         List<NetworkDto> networkDtos = networkMapper.queryNetworksByParam(tenantId, null, null);
         if (CollectionUtils.isEmpty(networkDtos)) {
             String msg = String.format("networkId : %s , tenantId : %s", networkId, tenantId);
@@ -97,7 +106,34 @@ public class NetworkServiceImpl implements NetworkService {
             ErrorInfo errorInfo = new ErrorInfo(ErrorCode.ERR_NETWORK_NOT_EXISTS, "network", msg);
             throw new CommonException(errorInfo);
         }
+
+        //网络被使用不允许删除
         NetworkDto networkDto = networkDtos.get(0);
+
+        //查询虚拟网卡信息
+        List<PortsDto> portsDtos = portsService.queryPortsAttrByNetworkId(tenantId, networkId);
+        int portCount = 0;
+        PortsDto portsDto = null;
+        for (PortsDto port : portsDtos) {
+            if (!"network:router_interface".
+                    equals(port.getDeviceOwner())) {
+                portCount++;
+            } else {
+                portsDto = port;
+            }
+        }
+
+        if (portCount > 0) {
+            String msg = String.format("networkId : %s , tenantId : %s", networkId, tenantId);
+
+            ErrorInfo errorInfo = new ErrorInfo(ErrorCode.ERR_NETWORK_USED, "network", msg);
+            throw new CommonException(errorInfo);
+        }
+
+        //删除虚拟网卡
+        if (portsDto != null) {
+            portsService.deletePort(tenantId,portsDto.getId());
+        }
 
         //删除网络
         networkMapper.deleteNetworkById(networkId);
@@ -105,12 +141,10 @@ public class NetworkServiceImpl implements NetworkService {
         standardattributesMapper.deleteStandardattributesById(networkDto.getStandardAttrId());
 
         //删除子网
-        List<SubnetVo> checkList = subnetService.querySubnetsAttr(tenantId,networkId,null);
-        if(!CollectionUtils.isEmpty(checkList)){
+        List<SubnetVo> checkList = subnetService.querySubnetsAttr(tenantId, networkId, null);
+        if (!CollectionUtils.isEmpty(checkList)) {
             subnetService.deleteSubent(tenantId, null, networkId);
         }
-
-
 
     }
 
