@@ -134,10 +134,12 @@ public class PortsServiceImpl implements PortsService {
 
     }
 
+    @Transactional
     @Override
     public void deletePort(String tenantId, String portId) {
         portsMapper.deletPortById(tenantId,portId);
         ipallocationsMapper.deleteIpAllocationsByPortId(portId);
+
     }
 
     @Override
