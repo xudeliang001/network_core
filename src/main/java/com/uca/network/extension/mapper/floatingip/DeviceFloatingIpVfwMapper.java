@@ -16,23 +16,28 @@ public interface DeviceFloatingIpVfwMapper {
      * @param floatingVfwDto
      * @return
      */
-    String insertFloatingIpVfw(DeviceFloatingVfwDto floatingVfwDto);
+    String insertDeviceFloatingIpVfw(DeviceFloatingVfwDto floatingVfwDto);
 
-    /**
-     * @param floatingVfwDtos
-     * @return
-     */
-    List<String> insertFloatingIpVfws(List<DeviceFloatingVfwDto> floatingVfwDtos);
 
     /**
      * @param floatingIpAddress
      * @return
      */
-    DeviceFloatingVfwDto queryFloatingIpVfwByAddress(@Param("floatingIpAddress") String floatingIpAddress);
+    DeviceFloatingVfwDto queryDeviceFloatingIpVfwByAddress(@Param("floatingIpAddress") String floatingIpAddress);
 
     /**
      * @param floatingIpAddress
      */
-    void deleteFloatingIpVfwByAddress(@Param("floatingIpAddress") String floatingIpAddress);
+    void deleteDeviceFloatingIpVfwByAddress(@Param("floatingIpAddress") String floatingIpAddress);
+
+    /**
+     * @param floatingIpAddress
+     */
+    void deleteDeviceFloatingIpVfwIpNumByAddress(@Param("floatingIpAddress") String floatingIpAddress);
+
+    /**
+     * @param floatingIpAddress
+     */
+    void deleteDeviceFloatingIpVfwSubnetByAddress(@Param("floatingIpAddress") String floatingIpAddress);
 
 }

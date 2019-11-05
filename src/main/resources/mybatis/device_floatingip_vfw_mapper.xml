@@ -3,7 +3,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.uca.network.extension.mapper.floatingip.DeviceFloatingIpVfwMapper">
 
-    <insert id = "insertFloatingIpVfw" parameterType="com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingVfwDto"
+    <!--<resultMap id="deviceFloatingVfwMap" type="com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingVfwDto">
+        <result column="id" property="id"/>
+        <result column="dept_name" property="deptName"/>
+        &lt;!&ndash;
+         collection定义关联集合类型的属性的封装规则
+           ofType:指定集合里面元素的类型
+          &ndash;&gt;
+        <collection property="employees" ofType="com.yefengyu.mybatis.entity.Employee" javaType="java.util.ArrayList">
+            <result column="id" property="id"/>
+            <result column="last_name" property="lastName"/>
+        </collection>
+    </resultMap>-->
+
+
+    <insert id = "insertDeviceFloatingIpVfw" parameterType="com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingVfwDto"
             useGeneratedKeys="true" keyProperty="id">
         insert into vfw_floatingip
         (
@@ -11,13 +25,8 @@
         tx_averateLimit,
         rx_averateLimit,
         fixed_ip_address,
-        floating_ip_num,
-        fixed_ip_num,
-        protocal,
         vpn_instance_id,
         acl_name,
-        src_subnet_cidr,
-        dst_subnet_cidr,
         address_group_id,
         address_group_name,
         type
@@ -28,13 +37,8 @@
         #{txAverateLimit},
         #{rxAverateLimit},
         #{fixedIpAddress},
-        #{floatingIpNum},
-        #{fixedIpNum},
-        #{protocal},
         #{vpnInstanceId},
         #{aclName},
-        #{srcSubnetCidr},
-        #{dstSubnetCidr},
         #{addressGroupId},
         #{addressGroupName},
         #{type}
@@ -42,53 +46,31 @@
     </insert>
 
 
-    <insert id = "insertFloatingIpVfws" parameterType="java.util.List"
-            useGeneratedKeys="true" keyProperty="id">
-        insert into vfw_floatingip
-        (
-        floating_ip_address,
-        tx_averateLimit,
-        rx_averateLimit,
-        fixed_ip_address,
-        floating_ip_num,
-        fixed_ip_num,
-        protocal,
-        vpn_instance_id,
-        acl_name,
-        src_subnet_cidr,
-        dst_subnet_cidr,
-        address_group_id,
-        address_group_name,
-        type
-        )
 
-        values
-        <foreach collection ="list" item="item" separator =",">
-        (
-        #{item.floatingIpAddress},
-        #{item.txAverateLimit},
-        #{item.rxAverateLimit},
-        #{item.fixedIpAddress},
-        #{item.floatingIpNum},
-        #{item.fixedIpNum},
-        #{item.protocal},
-        #{item.vpnInstanceId},
-        #{item.aclName},
-        #{item.srcSubnetCidr},
-        #{item.dstSubnetCidr},
-        #{item.addressGroupId},
-        #{item.addressGroupName},
-        #{item.type}
-        )
-        </foreach >
-    </insert>
-
-    <select id="queryFloatingIpVfwByAddress">
-        select * from vfw_floatingip where floating_ip_address = #{floatingIpAddress}
+    <select id="queryDeviceFloatingIpVfwByAddress" resultType="com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingVfwDto">
+        select
+        from device_floatingip_vfw a
+        left join device_floatingip_vfw_ip_num b
+        on a.floating_ip_address = b.floating_ip_addres
+        and left join device_floatingip_vfw_subnet c
+        on a.floating_ip_address = c.floating_ip_address
+        where a.floating_ip_address = #{floatingIpAddress}
     </select>
 
-    <delete id="deleteFloatingIpVfwByAddress">
-        delete from vfw_floatingip where floating_ip_address = #{floatingIpAddress}
+   <!-- <select id="queryFloatingIpVfwByAddress">
+        select * from vfw_floatingip where floating_ip_address = #{floatingIpAddress}
+    </select>-->
+
+    <delete id="deleteDeviceFloatingIpVfwByAddress">
+        delete from device_floatingip_vfw where floating_ip_address = #{floatingIpAddress}
+    </delete>
+
+    <delete id="deleteDeviceFloatingIpVfwIpNumByAddress">
+        delete from device_floatingip_vfw_ip_num where floating_ip_address = #{floatingIpAddress}
+    </delete>
+
+    <delete id="deleteDeviceFloatingIpVfwSubnetByAddress">
+        delete from device_floatingip_vfw_subnet where floating_ip_address = #{floatingIpAddress}
     </delete>
 
 

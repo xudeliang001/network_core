@@ -15,11 +15,8 @@ public class DeviceFloatingVfwDto {
     private String vfwMgrIp;
     private String floatingIpAddress;
     private String fixedIpAddress;
-    private String floatingIpNum;
-    private String fixedIpNum;
-    private String protocal;
-    private String srcSubnetCidr;
-    private String dstSubnetCidr;
+    private List<DeviceFloatingVfwIpNumDto> deviceFloatingVfwIpNumDtos;
+    private List<DeviceFloatingVfwSubnetDto> deviceFloatingVfwSubnetDtos;
     private String addressGroupId;
     private String addressGroupName;
     private String vpnInstanceId;
