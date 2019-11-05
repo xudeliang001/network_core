@@ -65,6 +65,8 @@ spec:
           value: "admin"
         - name: RABBITMQ_PASSWORD
           value: "unic-moove"
+        - name: EXTENSION_AGENT
+          value: http://extension-agent-service:9696
         ports:
         - containerPort: 30416
         - containerPort: 30414

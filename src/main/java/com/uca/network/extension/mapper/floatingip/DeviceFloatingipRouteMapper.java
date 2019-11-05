@@ -25,4 +25,6 @@ public interface DeviceFloatingipRouteMapper {
      */
     List<String> insertDeviceFloatingipRoute(List<DeviceFloatingipRouteDto> deviceFloatingipRouteDtos);
 
+    void deleteDeviceFloatingipRouteByAddress(@Param("floatingIpAddress") String floatingIpAddress);
+
 }

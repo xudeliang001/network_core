@@ -16,7 +16,7 @@
     </select>
 
 
-    <insert id = "insertDeviceFloatingipRoute" parameterType="com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingipRouteDto"
+    <insert id = "insertDeviceFloatingipRoute" parameterType="java.util.List"
             useGeneratedKeys="true" keyProperty="id">
         insert into device_floatingip_route
         (
@@ -26,15 +26,19 @@
         device_ip
         )
         values
-        <foreach collection ="list" item="route" separator =",">
+        <foreach collection ="list" item="item" separator =",">
         (
-        #{route.floatingIpAddress},
-        #{route.txAverateLimit},
-        #{route.rxAverateLimit},
-        #{route.deviceIp}
+        #{item.floatingIpAddress},
+        #{item.txAverateLimit},
+        #{item.rxAverateLimit},
+        #{item.deviceIp}
         )
         </foreach >
     </insert>
+
+    <delete id="deleteDeviceFloatingipRouteByAddress">
+        delete from device_floatingip_route where floating_ip_address = #{floatingIpAddress}
+    </delete>
 
 
 </mapper>

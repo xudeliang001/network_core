@@ -16,7 +16,8 @@
         protocal,
         vpn_instance_id,
         acl_name,
-        subnet_cidr,
+        src_subnet_cidr,
+        dst_subnet_cidr,
         address_group_id,
         address_group_name,
         type
@@ -32,11 +33,54 @@
         #{protocal},
         #{vpnInstanceId},
         #{aclName},
-        #{subnetCidr},
+        #{srcSubnetCidr},
+        #{dstSubnetCidr},
         #{addressGroupId},
         #{addressGroupName},
         #{type}
         )
+    </insert>
+
+
+    <insert id = "insertFloatingIpVfws" parameterType="java.util.List"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into vfw_floatingip
+        (
+        floating_ip_address,
+        tx_averateLimit,
+        rx_averateLimit,
+        fixed_ip_address,
+        floating_ip_num,
+        fixed_ip_num,
+        protocal,
+        vpn_instance_id,
+        acl_name,
+        src_subnet_cidr,
+        dst_subnet_cidr,
+        address_group_id,
+        address_group_name,
+        type
+        )
+
+        values
+        <foreach collection ="list" item="item" separator =",">
+        (
+        #{item.floatingIpAddress},
+        #{item.txAverateLimit},
+        #{item.rxAverateLimit},
+        #{item.fixedIpAddress},
+        #{item.floatingIpNum},
+        #{item.fixedIpNum},
+        #{item.protocal},
+        #{item.vpnInstanceId},
+        #{item.aclName},
+        #{item.srcSubnetCidr},
+        #{item.dstSubnetCidr},
+        #{item.addressGroupId},
+        #{item.addressGroupName},
+        #{item.type}
+        )
+        </foreach >
     </insert>
 
     <select id="queryFloatingIpVfwByAddress">

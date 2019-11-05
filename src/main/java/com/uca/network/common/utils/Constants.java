@@ -1,18 +1,10 @@
-/***********************************************************************
- * Constants.java H3C所有，受到法律的保护，任何公司或个人，未经授权不得擅自拷贝。
- *
- * @copyright Copyright: 2015-2020
- * @creator likewei
- * @create-time 2018/3/29 14:48
- * @revision $Id: *
- ***********************************************************************/
 package com.uca.network.common.utils;
 
 public enum Constants {
     /**
      * http head 常量
      */
-    HTTP_HEAD_X_AUTH_TOKEN("X-Auth-Token"), HTTP_HEAD_X_SUBJECT_TOKEN("X-Subject-Token"), HTTP_MSG_TYPE("application/json;charset=UTF-8"), H3CLOUDOS_CORE_TARGET("H3CloudOS-Core-Target"), DEFAULT_DOMAIN_ID("default");
+    HTTP_HEAD_X_AUTH_TOKEN("X-Auth-Token"), HTTP_HEAD_X_SUBJECT_TOKEN("X-Subject-Token"), HTTP_MSG_TYPE("application/json;charset=UTF-8"), DEFAULT_DOMAIN_ID("default");
 
     private String value;
 

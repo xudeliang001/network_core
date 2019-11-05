@@ -1,10 +1,8 @@
 package com.uca.network;
 
-import com.alibaba.fastjson.JSON;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -13,10 +11,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 @SpringBootApplication
 @EnableSwagger2
 @EnableAsync
@@ -24,7 +18,7 @@ import java.util.UUID;
 @EnableTransactionManagement
 public class Application {
     public static void main(String[] args) {
-        ConfigurableApplicationContext applicationContext = SpringApplication.run(Application.class, args);
+        SpringApplication.run(Application.class, args);
 /*//        Map map = applicationContext.getBeansOfType(SubnetService.class);
         SubnetService subnetService = applicationContext.getBean(SubnetService.class);
 //        SubnetVo subnetVo = new SubnetVo();

@@ -1,11 +1,3 @@
-/***********************************************************************
- * DnsUtils.java H3C所有，受到法律的保护，任何公司或个人，未经授权不得擅自拷贝。
- *
- * @copyright Copyright: 2015-2020
- * @creator lijun<li.junA@h3c.com>
- * @create-time 2018/7/11 9:50
- * @revision $Id: *
- ***********************************************************************/
 package com.uca.network.common.utils;
 
 public class DnsUtils {

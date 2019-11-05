@@ -19,7 +19,7 @@ public class FloatingIpToPluginDto {
     private String floatingIpNum;
     private String fixedIpNum;
     private String protocal;
-    private List<String> subnetCidrs;
+    private List<SubnetCidrDto> subnetCidrs;
     private String type;
 
 }

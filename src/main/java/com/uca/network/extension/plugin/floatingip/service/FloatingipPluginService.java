@@ -7,11 +7,17 @@ import com.uca.network.extension.mapper.floatingip.DeviceFloatingipRouteMapper;
 import com.uca.network.extension.mapper.floatingip.dto.DeviceExitRouteDto;
 import com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingVfwDto;
 import com.uca.network.extension.mapper.floatingip.dto.DeviceFloatingipRouteDto;
+import com.uca.network.extension.plugin.floatingip.agent.RouteService;
+import com.uca.network.extension.plugin.floatingip.agent.VfwService;
 import com.uca.network.extension.plugin.floatingip.dto.FloatingIpToPluginDto;
+import com.uca.network.extension.plugin.floatingip.dto.SubnetCidrDto;
+import com.uca.network.extension.plugin.floatingip.dto.VfwInfoDto;
+import com.uca.network.extension.plugin.floatingip.util.FloatingIpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -32,11 +38,18 @@ public class FloatingipPluginService {
     private DeviceFloatingipRouteMapper deviceFloatingipRouteMapper;
     @Autowired
     private DeviceExitRouteMapper deviceExitRouteMapper;
+    @Autowired
+    private FloatingIpUtil floatingIpUtil;
+    @Autowired
+    private VfwService vfwService;
+    @Autowired
+    private RouteService routeService;
 
     /**
      * @param floatingIpToPluginDto
      * @return
      */
+    @Transactional
     public Boolean bindFloatingIpToAgent(FloatingIpToPluginDto floatingIpToPluginDto){
         logger.info("FloatingipPluginService-bindFloatingIpToAgent start-floatingIpToPluginDto:{}", JSON.toJSONString(floatingIpToPluginDto));
         //floatingIpToPluginDto
@@ -44,27 +57,16 @@ public class FloatingipPluginService {
             logger.error("floatingIpToPluginDto is null");
             return false;
         }
-
         //校验不同类型 dnat、dsnat、snat 传入的参数
-        //Boolean result = checkFloatingIpToPluginParam(floatingIpToPluginDto);
-        //需要存储实际网络模型vfw
-        DeviceFloatingVfwDto deviceFloatingVfwDto = new DeviceFloatingVfwDto();
-
         switch (floatingIpToPluginDto.getType()) {
             case "dnat":
                 if (floatingIpToPluginDto.getFixedIpAddress() == null || floatingIpToPluginDto.getFloatingIpAddress() == null){
                     logger.error("dsnat:param is invalid!");
                     return false;
                 }
-                //组装存库数据和下发agent数据
-                //1、获取主机所属的vpn-instance的id，如： 2jn9lr97r19f5p645sotugnglq
-
-                //2、并根据vpn-insantance-id和floatingipAddress 组合acl name，如：SDN_NAT_ACL_2jn9lr97r19f5p645sotugnglq_103_36_30_4
-
-                //3、封装DeviceFloatingVfwDto
-
+                //组装存库数据和下发agent vfw数据
+                createDnatToVfw(floatingIpToPluginDto);
                 break;
-
             case "dsnat":
                 boolean result = floatingIpToPluginDto.getFixedIpAddress() == null || floatingIpToPluginDto.getFloatingIpAddress() == null ||
                         floatingIpToPluginDto.getProtocal() == null || (floatingIpToPluginDto.getFixedIpNum() == null && floatingIpToPluginDto.getFloatingIpNum() != null) ||
@@ -73,42 +75,26 @@ public class FloatingipPluginService {
                     logger.error("dnat:param is invalid!");
                     return false;
                 }
-
                 //组装存库数据和下发agent数据
-                //1、获取主机所属的vpn-instance的id，如： 2jn9lr97r19f5p645sotugnglq
-
-                //2、并根据vpn-insantance-id 组合acl name，如： SDN_NAT_ACL_2jn9lr97r19f5p645sotugnglq
-
-                //3、获取不重复的address-group的id
-
-                //4、根据vpn-insantance-id 组合address-group name,如：SDN_ADDR_2jn9lr97r19f5p645sotugnglq
-
-                //5、封装DeviceFloatingVfwDto
-
+                createDsnatToVfw(floatingIpToPluginDto);
                 break;
-
             case "snat":
                 if (CollectionUtils.isEmpty(floatingIpToPluginDto.getSubnetCidrs()) || floatingIpToPluginDto.getFloatingIpAddress() == null){
                     logger.error("snat:param is invalid!");
                     return false;
                 }
-
                 //组装存库数据和下发agent数据
-                //1、获取主机所属的vpn-instance的id，如： 2jn9lr97r19f5p645sotugnglq
-
-                //2、并根据vpn-insantance-id 组合acl name，如： SDN_NAT_ACL_2jn9lr97r19f5p645sotugnglq
-
-                //3、获取不重复的address-group的id
-
-                //4、根据vpn-insantance-id 组合address-group name,如：SDN_ADDR_2jn9lr97r19f5p645sotugnglq
-
-                //5、封装DeviceFloatingVfwDto
-
+                createSnatToVfw(floatingIpToPluginDto);
                 break;
             default:
                 break;
         }
+        //下发带宽
+        createBandwidthToRoute(floatingIpToPluginDto);
+        return true;
+    }
 
+    private void createBandwidthToRoute(FloatingIpToPluginDto floatingIpToPluginDto) {
         //封装带宽数据
         List<DeviceFloatingipRouteDto> deviceFloatingipRouteDtos = new ArrayList<>();
         List<DeviceExitRouteDto> deviceExitRouteDtos = deviceExitRouteMapper.queryExitRoute();
@@ -120,32 +106,115 @@ public class FloatingipPluginService {
             deviceFloatingipRouteDto.setTxAverateLimit(floatingIpToPluginDto.getTxAverateLimit());
             deviceFloatingipRouteDtos.add(deviceFloatingipRouteDto);
         });
+        deviceFloatingipRouteMapper.insertDeviceFloatingipRoute(deviceFloatingipRouteDtos);
 
-
-        //存实际网络数据
-        try {
-            deviceFloatingIpVfwMapper.insertFloatingIpVfw(deviceFloatingVfwDto);
-            deviceFloatingipRouteMapper.insertDeviceFloatingipRoute(deviceFloatingipRouteDtos);
-        } catch (Exception e){
-
-        }
-
-
-        //下发到agent
-            //下发防火墙
-
-            //下发路由器带宽
-
-
-        return true;
+        //TODO 下发路由器带宽到agent
+        routeService.createBandwidthToRouteAgent(deviceFloatingipRouteDtos, deviceExitRouteDtos);
     }
 
+
+    private void createDnatToVfw(FloatingIpToPluginDto floatingIpToPluginDto) {
+        //1、获取主机所属的vpn-instance的id，如： 2jn9lr97r19f5p645sotugnglq
+        String vpnInstanceId = floatingIpUtil.getVpnInstanceIdByFixedIpAddr(floatingIpToPluginDto.getFixedIpAddress());
+
+        //2、根据vpnInstanceId获取虚墙信息
+        VfwInfoDto vfwInfoDto = floatingIpUtil.getVfwInfo(vpnInstanceId);
+
+        //2、并根据vpn-insantance-id和floatingipAddress 组合acl name，如：SDN_NAT_ACL_2jn9lr97r19f5p645sotugnglq_103_36_30_4
+        String aclName = "UNI_NAT_ACL_" + vpnInstanceId + "_" + floatingIpToPluginDto.getFloatingIpAddress();
+
+        //3、封装DeviceFloatingVfwDto
+        DeviceFloatingVfwDto deviceFloatingVfwDto = new DeviceFloatingVfwDto();
+        deviceFloatingVfwDto.setAclName(aclName);
+        deviceFloatingVfwDto.setVfwMgrIp(vfwInfoDto.getMgrIp());
+        deviceFloatingVfwDto.setVpnInstanceId(vpnInstanceId);
+        deviceFloatingVfwDto.setFixedIpAddress(floatingIpToPluginDto.getFixedIpAddress());
+        deviceFloatingVfwDto.setFloatingIpAddress(floatingIpToPluginDto.getFloatingIpAddress());
+        deviceFloatingVfwDto.setType("dnat");
+
+        //4、存device数据表
+        deviceFloatingIpVfwMapper.insertFloatingIpVfw(deviceFloatingVfwDto);
+
+        //5、下发防火墙
+        vfwService.createDnatToAgent(vfwInfoDto, deviceFloatingVfwDto);
+    }
+
+
+
+    private void createDsnatToVfw(FloatingIpToPluginDto floatingIpToPluginDto) {
+        //TODO 1、获取主机所属的vpn-instance的id，如： 2jn9lr97r19f5p645sotugnglq
+        String vpnInstanceId = "";
+        //2、根据vpnInstanceId获取虚墙信息
+        VfwInfoDto vfwInfoDto = floatingIpUtil.getVfwInfo(vpnInstanceId);
+        //3、并根据vpn-insantance-id 组合acl name，如： SDN_NAT_ACL_2jn9lr97r19f5p645sotugnglq
+        String aclName = "UNI_NAT_ACL_" + vpnInstanceId + "_" + floatingIpToPluginDto.getFloatingIpAddress();
+        //TODO 4、获取不重复的address-group的id
+        String addressGroupId = "";
+        //5、根据vpn-insantance-id 组合address-group name,如：SDN_ADDR_2jn9lr97r19f5p645sotugnglq
+        String addressGroupName = "UNI_NAT_GROUP_" + vpnInstanceId + "_" + addressGroupId;
+        //6、封装DeviceFloatingVfwDto
+        List<DeviceFloatingVfwDto> deviceFloatingVfwDtos = new ArrayList<>();
+        for (SubnetCidrDto subnetCidr : floatingIpToPluginDto.getSubnetCidrs()){
+            DeviceFloatingVfwDto deviceFloatingVfwDto = new DeviceFloatingVfwDto();
+            deviceFloatingVfwDto.setVfwMgrIp(vfwInfoDto.getMgrIp());
+            deviceFloatingVfwDto.setVpnInstanceId(vpnInstanceId);
+            deviceFloatingVfwDto.setType("dsnat");
+            deviceFloatingVfwDto.setFloatingIpAddress(floatingIpToPluginDto.getFloatingIpAddress());
+            deviceFloatingVfwDto.setFixedIpAddress(floatingIpToPluginDto.getFixedIpAddress());
+            deviceFloatingVfwDto.setFixedIpNum(floatingIpToPluginDto.getFixedIpNum());
+            deviceFloatingVfwDto.setFloatingIpNum(floatingIpToPluginDto.getFloatingIpNum());
+            deviceFloatingVfwDto.setProtocal(floatingIpToPluginDto.getProtocal());
+            deviceFloatingVfwDto.setSrcSubnetCidr(subnetCidr.getSrcSubnetCidr());
+            deviceFloatingVfwDto.setDstSubnetCidr(subnetCidr.getDstSubnetCidr());
+            deviceFloatingVfwDto.setAclName(aclName);
+            deviceFloatingVfwDto.setAddressGroupId(addressGroupId);
+            deviceFloatingVfwDto.setAddressGroupName(addressGroupName);
+            deviceFloatingVfwDtos.add(deviceFloatingVfwDto);
+        }
+        //5、存device数据表
+        deviceFloatingIpVfwMapper.insertFloatingIpVfws(deviceFloatingVfwDtos);
+
+        //6、下发防火墙
+    }
+
+
+    private void createSnatToVfw(FloatingIpToPluginDto floatingIpToPluginDto) {
+        //TODO 1、获取主机所属的vpn-instance的id，如： 2jn9lr97r19f5p645sotugnglq
+        String vpnInstanceId = "";
+        //2、根据vpnInstanceId获取虚墙信息
+        VfwInfoDto vfwInfoDto = floatingIpUtil.getVfwInfo(vpnInstanceId);
+        //3、并根据vpn-insantance-id 组合acl name，如： SDN_NAT_ACL_2jn9lr97r19f5p645sotugnglq
+        String aclName = "UNI_NAT_ACL_" + vpnInstanceId + "_" + floatingIpToPluginDto.getFloatingIpAddress();
+        //TODO 4、获取不重复的address-group的id
+        String addressGroupId = "";
+        //5、根据vpn-insantance-id 组合address-group name,如：SDN_ADDR_2jn9lr97r19f5p645sotugnglq
+        String addressGroupName = "UNI_NAT_GROUP_" + vpnInstanceId + "_" + addressGroupId;
+        //6、封装DeviceFloatingVfwDto
+        List<DeviceFloatingVfwDto> deviceFloatingVfwDtos = new ArrayList<>();
+        for (SubnetCidrDto subnetCidr : floatingIpToPluginDto.getSubnetCidrs()){
+            DeviceFloatingVfwDto deviceFloatingVfwDto = new DeviceFloatingVfwDto();
+            deviceFloatingVfwDto.setProtocal("snat");
+            deviceFloatingVfwDto.setAclName(aclName);
+            deviceFloatingVfwDto.setVfwMgrIp(vfwInfoDto.getMgrIp());
+            deviceFloatingVfwDto.setAddressGroupId(addressGroupId);
+            deviceFloatingVfwDto.setAddressGroupName(addressGroupName);
+            deviceFloatingVfwDto.setVpnInstanceId(vpnInstanceId);
+            deviceFloatingVfwDto.setSrcSubnetCidr(subnetCidr.getSrcSubnetCidr());
+            deviceFloatingVfwDto.setDstSubnetCidr(subnetCidr.getDstSubnetCidr());
+            deviceFloatingVfwDto.setFloatingIpAddress(floatingIpToPluginDto.getFloatingIpAddress());
+            deviceFloatingVfwDtos.add(deviceFloatingVfwDto);
+        }
+        //6、存device数据表
+        deviceFloatingIpVfwMapper.insertFloatingIpVfws(deviceFloatingVfwDtos);
+        //7、下发防火墙
+    }
 
 
     /**
      * @param floatingIpToPluginDto
      * @return
      */
+    @Transactional
     public Boolean unbindFloatingIpToAgent(FloatingIpToPluginDto floatingIpToPluginDto){
         logger.info("FloatingipPluginService-unbindFloatingIpToAgent start-floatingIpToPluginDto:{}", JSON.toJSONString(floatingIpToPluginDto));
         //floatingIpToPluginDto
@@ -161,12 +230,8 @@ public class FloatingipPluginService {
                     logger.error("dsnat:param is invalid!");
                     return false;
                 }
-                //根据floatingip删除表
-                deviceFloatingIpVfwMapper.deleteFloatingIpVfwByAddress(floatingIpToPluginDto.getFloatingIpAddress());
-                //调用agent删除防火墙配置
-
-                //删除带宽配置
-
+                //删除dnat和带宽
+                deleteDnatAndBandwidth(floatingIpToPluginDto);
                 break;
             case "dsnat":
                 boolean result = floatingIpToPluginDto.getFixedIpAddress() == null || floatingIpToPluginDto.getFloatingIpAddress() == null ||
@@ -201,5 +266,25 @@ public class FloatingipPluginService {
                 break;
         }
         return true;
+    }
+
+    private void deleteDnatAndBandwidth(FloatingIpToPluginDto floatingIpToPluginDto) {
+        logger.info("FloatingipPluginService-deleteDnatAndBandwidth-start:floatingIpToPluginDto:{}", JSON.toJSONString(floatingIpToPluginDto));
+        //获取主机所属的vpn-instance的id，如： 2jn9lr97r19f5p645sotugnglq
+        String vpnInstanceId = floatingIpUtil.getVpnInstanceIdByFixedIpAddr(floatingIpToPluginDto.getFixedIpAddress());
+        //根据vpnInstanceId获取虚墙信息
+        VfwInfoDto vfwInfoDto = floatingIpUtil.getVfwInfo(vpnInstanceId);
+        //查询DeviceFloatingVfwDto
+        DeviceFloatingVfwDto deviceFloatingVfwDto = deviceFloatingIpVfwMapper.queryFloatingIpVfwByAddress(floatingIpToPluginDto.getFloatingIpAddress());
+        //根据floatingipAddress删除表
+        deviceFloatingIpVfwMapper.deleteFloatingIpVfwByAddress(floatingIpToPluginDto.getFloatingIpAddress());
+        //调用agent删除防火墙配置
+        vfwService.deleteDnatToAgent(vfwInfoDto, deviceFloatingVfwDto);
+        //删除带宽配置数据
+        List<DeviceFloatingipRouteDto> deviceFloatingipRouteDtos = deviceFloatingipRouteMapper.queryDeviceFloatingipRouteByParam(null, floatingIpToPluginDto.getFloatingIpAddress());
+        deviceFloatingipRouteMapper.deleteDeviceFloatingipRouteByAddress(floatingIpToPluginDto.getFloatingIpAddress());
+        //TODO 调用agent 删除带宽
+
+
     }
 }

@@ -1,11 +1,3 @@
-/***********************************************************************
- * RestClient.java H3C所有，受到法律的保护，任何公司或个人，未经授权不得擅自拷贝。
- *
- * @copyright Copyright: 2015-2020
- * @creator likewei<li.kewei   @   h3c.com>
- * @create-time 2018/4/4 10:22
- * @revision $Id: *
- ***********************************************************************/
 package com.uca.network.common.utils;
 
 import com.alibaba.fastjson.JSON;
@@ -23,12 +15,7 @@ public class RestClient {
     private static final Logger logger = LoggerFactory.getLogger(RestClient.class);
     private static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=utf-8";
     private static final String CONTENT_TYPE = "Content-Type";
-    private static final String X_AUTH_USER = "x-auth-user";
-    private static final String X_AUTH_USERNAME = "x-auth-username";
-    private static final String X_SOURCE_IP = "x-source-ip";
-    private static final String H3CMP_CLOUD_ID = "H3CMP-Cloud-Id";
     private static final String X_AUTH_TOKEN = "x-auth-token";
-    private static final String ZONE_TYPE = "Resource-Zone-Type";
     private final RestTemplate restTemplate;
 
     public RestClient(RestTemplate restTemplate) {
