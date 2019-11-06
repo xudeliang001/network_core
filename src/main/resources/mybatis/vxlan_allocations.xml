@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uca.network.extension.mapper.allocations.VxlanAllocationsMapper">
+
+    <resultMap id="vxlanAllocationsMap" type="com.uca.network.extension.mapper.allocations.model.VxlanAllocations">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="vxlan_domain_id" jdbcType="VARCHAR" property="vxlanDomainId"/>
+        <result column="vxlan_id" jdbcType="BIGINT" property="vxlanId"/>
+        <result column="allocated" jdbcType="INTEGER" property="allocated"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.uca.network.extension.mapper.allocations.model.VxlanAllocations"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_vxlan_allocations(id, vxlan_domain_id, vxlan_id, allocated)
+        values(#{id}, #{vxlanDomainId}, #{vxlanId}, #{allocated})
+    </insert>
+
+    <select id="getMaxAllocatedVxlanFromDomain" resultMap="vxlanAllocationsMap">
+        select * from tbl_vxlan_allocations where vxlan_domain_id = #{vxlanDomainId} and allocated = 1 order by vxlan_id desc limit 1
+    </select>
+
+    <select id="getAllocatedVxlanByDomainAndVxlanId" resultMap="vxlanAllocationsMap">
+        select * from tbl_vxlan_allocations where vxlan_domain_id = #{vxlanDomainId} and vxlan_id = #{vxlanId} and allocated = 1
+    </select>
+
+    <select id="getReleasedVxlanFromDomain" resultMap="vxlanAllocationsMap">
+        select * from tbl_vxlan_allocations where vxlan_domain_id = #{vxlanDomainId} and allocated = 0 limit 1
+    </select>
+
+    <update id="reuseReleasedVxlan">
+        update tbl_vxlan_allocations set allocated = 1 where id = #{id} and allocated = 0
+    </update>
+
+    <update id="releaseAllocatedVxlan">
+        update tbl_vxlan_allocations set allocated = 0 where id = #{id} and allocated = 1
+    </update>
+
+
+</mapper>
+

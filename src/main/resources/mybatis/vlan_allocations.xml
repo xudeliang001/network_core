@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uca.network.extension.mapper.allocations.VlanAllocationsMapper">
+
+    <resultMap id="vlanAllocationsMap" type="com.uca.network.extension.mapper.allocations.model.VlanAllocations">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="device_id" jdbcType="VARCHAR" property="deviceId"/>
+        <result column="vlan_id" jdbcType="BIGINT" property="vlanId"/>
+        <result column="allocated" jdbcType="INTEGER" property="allocated"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.uca.network.extension.mapper.allocations.model.VlanAllocations"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_vlan_allocations(id, device_id, vlan_id, allocated)
+        values(#{id}, #{deviceId}, #{vlanId}, #{allocated})
+    </insert>
+
+    <select id="getMaxAllocatedVlanFromDomain" resultMap="vlanAllocationsMap">
+        select * from tbl_vlan_allocations where device_id = #{deviceId} and allocated = 1 order by vlan_id desc limit 1
+    </select>
+
+    <select id="getAllocatedVlanByDomainAndVlanId" resultMap="vlanAllocationsMap">
+        select * from tbl_vlan_allocations where device_id = #{deviceId} and vlan_id = #{vlanId} and allocated = 1
+    </select>
+
+    <select id="getReleasedVlanFromDomain" resultMap="vlanAllocationsMap">
+        select * from tbl_vlan_allocations where device_id = #{deviceId} and allocated = 0 limit 1
+    </select>
+
+    <update id="reuseReleasedVlan">
+        update tbl_vlan_allocations set allocated = 1 where id = #{id} and allocated = 0
+    </update>
+
+    <update id="releaseAllocatedVlan">
+        update tbl_vlan_allocations set allocated = 0 where id = #{id} and allocated = 1
+    </update>
+
+
+</mapper>
+

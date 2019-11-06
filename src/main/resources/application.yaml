@@ -47,6 +47,7 @@ network:
   dns: 220.194.70.15,113.207.55.15
   swaggerEnable: ${SWAGGER_ENABLE}
   extensionAgent: ${EXTENSION_AGENT}
+  macAddressTemplate: ${MAC_ADDRESS_TEMPLATE}
 
 logging:
   exception:

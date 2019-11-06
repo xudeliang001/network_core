@@ -16,7 +16,14 @@ public enum ErrorCode {
 
     ERR_NETWORK_USED(3003, "网络被使用"),
 
-    ERR_ROUTER_NOT_EXISTS(4001, "路由器不存在");
+    ERR_ROUTER_NOT_EXISTS(4001, "路由器不存在"),
+
+    IP_ALREADY_EXIST(10001, "ip:%s已经存在"),
+    IP_POOL_IS_FULL(10002, "ip地址池已经耗尽"),
+    MAC_ADDRESS_EXPLICIT(10003, "mac 地址冲突"),
+    VXLAN_POOL_IS_FULL(10004, "vxlan域已经耗尽"),
+    VLAN_POOL_IS_FULL(10005, "vlan在设备%s已经耗尽"),
+    ;
 
 
     private final Integer val;

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uca.network.extension.mapper.allocations.IpAllocationsMapper">
+
+    <resultMap id="ipAllocationsMap" type="com.uca.network.extension.mapper.allocations.model.IpAllocations">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="subnet_id" jdbcType="VARCHAR" property="subnetId"/>
+        <result column="ip_address" jdbcType="VARCHAR" property="ipAddress"/>
+        <result column="allocated" jdbcType="INTEGER" property="allocated"/>
+        <result column="ip_index" jdbcType="BIGINT" property="ipIndex"/>
+        <result column="reserved_tenant_id" jdbcType="VARCHAR" property="reservedTenantId"/>
+        <result column="reserved_description" jdbcType="VARCHAR" property="reservedDescription"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.uca.network.extension.mapper.allocations.model.IpAllocations"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into ${tableName}(id, subnet_id, ip_address, allocated, ip_index, reserved_tenant_id, reserved_description)
+        values(#{ipAllocations.id}, #{ipAllocations.subnetId}, #{ipAllocations.ipAddress}, #{ipAllocations.allocated}, #{ipAllocations.ipIndex}, #{ipAllocations.reservedTenantId}, #{ipAllocations.reservedDescription})
+    </insert>
+
+    <select id="getMaxAllocatedIpFromSubnet" resultMap="ipAllocationsMap">
+        select * from ${tableName} where subnet_id = #{subnetId} and ip_index > 0 and allocated = 1 order by ip_index desc limit 1
+    </select>
+
+    <select id="getReleasedIpBySubnetAndIpAddress" resultMap="ipAllocationsMap">
+        select * from ${tableName} where subnet_id = #{subnetId} and ip_address = #{ipAddress} and allocated = 0
+    </select>
+
+    <select id="getAllocatedIpBySubnetAndIpAddress" resultMap="ipAllocationsMap">
+        select * from ${tableName} where subnet_id = #{subnetId} and ip_address = #{ipAddress} and allocated = 1
+    </select>
+
+    <select id="getReleasedIpFromSubnet" resultMap="ipAllocationsMap">
+        select * from ${tableName} where subnet_id = #{subnetId} and allocated = 0 limit 1
+    </select>
+
+    <update id="reuseReleasedIp">
+        update ${tableName} set allocated = 1, ip_index = #{ipIndex} where id = #{id} and allocated = 0
+    </update>
+
+    <update id="releaseAllocatedIp">
+        update ${tableName} set allocated = 0 where id = #{id} and allocated = 1
+    </update>
+
+
+</mapper>
+

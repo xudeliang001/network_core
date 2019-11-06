@@ -67,6 +67,8 @@ spec:
           value: "unic-moove"
         - name: EXTENSION_AGENT
           value: http://extension-agent-service:9696
+        - name: MAC_ADDRESS_TEMPLATE
+          value: "fa:16:3e:00:00:00"
         ports:
         - containerPort: 30416
         - containerPort: 30414
