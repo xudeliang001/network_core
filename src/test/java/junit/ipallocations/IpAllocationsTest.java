@@ -31,7 +31,6 @@ public class IpAllocationsTest {
     private MacAddressService macAddressService;
 
     @Test
-    @Ignore
     public void testFloatingIp() {
         String subnetId = UUID.randomUUID().toString();// "6ef42666-f95f-4d58-87d8-8de3fb3830bb";
         long tt = System.currentTimeMillis();
@@ -43,12 +42,21 @@ public class IpAllocationsTest {
     }
 
     @Test
-    @Ignore
+    public void testReleaseIp(){
+        ipAllocationsService.releaseIp("4b6204e1-3acc-458d-84fa-74acdd1ce2e9", "192.168.0.7");
+    }
+
+    @Test
     public void testMacAddress() {
         for (int i = 0; i < 100; i++) {
             long t = System.currentTimeMillis();
             System.out.println(macAddressService.getMacAddress());
             System.out.println(System.currentTimeMillis() - t);
         }
+    }
+
+    @Test
+    public void testDeleteMac(){
+        macAddressService.deleteMacAddress("fa:16:3e:fd:44:bb");
     }
 }

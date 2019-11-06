@@ -33,7 +33,6 @@ public class VxlanAllocationsTest {
     private VlanAllocationsService vlanAllocationsService;
 
     @Test
-    @Ignore
     public void testVxlan() {
         String subnetId = "25d95bbd-ecc0-41e5-b993-e92f82fb44ce";// "6ef42666-f95f-4d58-87d8-8de3fb3830bb";
         long tt = System.currentTimeMillis();
@@ -46,7 +45,6 @@ public class VxlanAllocationsTest {
 
 
     @Test
-    @Ignore
     public void testVlan() {
         String subnetId = UUID.randomUUID().toString();// "6ef42666-f95f-4d58-87d8-8de3fb3830bb";
         long tt = System.currentTimeMillis();
@@ -55,5 +53,10 @@ public class VxlanAllocationsTest {
             System.out.println(vlanId);
         }
         System.out.println(System.currentTimeMillis() - tt);
+    }
+
+    @Test
+    public void testReleaseVxlan(){
+        vxlanAllocationsService.releaseVxlanId("25d95bbd-ecc0-41e5-b993-e92f82fb44ce", 116);
     }
 }

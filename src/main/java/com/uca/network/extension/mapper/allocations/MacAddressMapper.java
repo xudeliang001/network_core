@@ -10,4 +10,5 @@ public interface MacAddressMapper {
 
     void insert(MacAddress macAddress);
 
+    void delete(String macAddress);
 }

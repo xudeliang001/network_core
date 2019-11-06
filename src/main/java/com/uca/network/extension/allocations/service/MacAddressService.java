@@ -12,4 +12,9 @@ public interface MacAddressService {
      * 获取指定来源的mac地址
      */
     String getMacAddress(String macAddress, String macSource);
+
+    /**
+     * 删除mac地址
+     */
+    void deleteMacAddress(String macAddress);
 }

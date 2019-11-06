@@ -65,6 +65,11 @@ public class MacAddressServiceImpl implements MacAddressService {
         return macAddress;
     }
 
+    @Override
+    public void deleteMacAddress(String macAddress) {
+        macAddressMapper.delete(macAddress);
+    }
+
     /**
      * 获取16进制随机数
      * @param len
